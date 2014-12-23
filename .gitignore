@@ -1,0 +1,6 @@
+/bin/
+/lib/
+/.metadata/
+.classpath
+.project
+pipeline-jar.jardesc
