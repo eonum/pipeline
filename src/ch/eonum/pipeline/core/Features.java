@@ -19,10 +19,12 @@ import java.util.Set;
 import ch.eonum.pipeline.util.Log;
 
 /**
- * class holding a list of dimensions/features.
+ * A set holding with dimensions/features.
  * 
- * The list can be read or written to a file. non-numeric feature labels are
- * being ordered and can be accessed by an index
+ * Each feature is identified by a unique integer and is associated to an index.
+ * 
+ * The set can be read or written to a file. Feature labels are ordered and can
+ * be accessed by an index
  * 
  * @author tim
  * 
@@ -32,12 +34,19 @@ public class Features {
 	private Map<String, Integer> indicesByFeature;
 	private Map<String, String> descriptions;
 
+	/**
+	 * Constructor. Create empty feature set.
+	 */
 	public Features() {
 		this.featuresByIndex = new ArrayList<String>();
 		this.indicesByFeature = new LinkedHashMap<String, Integer>();
 		this.descriptions = new HashMap<String, String>();
 	}
 
+	/**
+	 * Constructor. Initialize using an existing list of features.
+	 * @param list
+	 */
 	public Features(List<String> list) {
 		this();
 		for(String e : list)
@@ -46,7 +55,7 @@ public class Features {
 	}
 
 	/**
-	 * get the index from a certain dimension.
+	 * get the index from a certain feature.
 	 * 
 	 * @param feature
 	 * @return
@@ -66,18 +75,19 @@ public class Features {
 	}
 
 	/**
-	 * get the description of a dimension/feature
+	 * Get the description of a feature. Return the feature itself if there is
+	 * no description for this feature.
 	 * 
 	 * @param dim
 	 * @return
 	 */
-	public String getDescription(String dim) {
-		return this.descriptions.containsKey(dim) ? this.descriptions.get(dim)
-				: dim;
+	public String getDescription(String feature) {
+		return this.descriptions.containsKey(feature) ? this.descriptions
+				.get(feature) : feature;
 	}
 
 	/**
-	 * print all features into a file.
+	 * Print all features to a file.
 	 * 
 	 * @param fileName
 	 */
@@ -96,9 +106,9 @@ public class Features {
 	}
 
 	/**
-	 * read a features file into memory. all lines of a features file are in the
+	 * Read a features file into memory. All lines of a features file are in the
 	 * format: "index:feature_label:description" Example:
-	 * "23:los:Length of stay" The indices are not being read. They are asserted
+	 * "23:los:Length of stay" The indices are not read. They are asserted
 	 * to be equal to the line number -1. The only purpose of the indices in the
 	 * features file is better readability.
 	 * 
@@ -131,36 +141,37 @@ public class Features {
 	}
 
 	/**
-	 * add a description to a feature/dimension
+	 * Add a description to a feature
 	 * 
-	 * @param string
-	 * @param string2
+	 * @param feature
+	 * @param description
 	 */
 	private void addDescription(String feature, String description) {
 		this.descriptions.put(feature, description);
 	}
 
 	/**
-	 * create a dimensions object from a list of strings, usually extracted
+	 * Create a feature object from a list of strings, usually extracted
 	 * using a FeatureExtractor
 	 * 
 	 * @param fileName
 	 * @return
 	 */
 	public static Features createFromList(List<String> feats) {
-		Features features = new Features();
-		for (String label : feats)
-			features.addFeature(label);
-		features.recalculateIndex();
-		return features;
+		return new Features(feats);
 	}
 
+	/**
+	 * Get the number of features.
+	 * 
+	 * @return
+	 */
 	public int size() {
 		return this.featuresByIndex.size();
 	}
 
 	/**
-	 * load descriptions of features from a separate file. format (one line):
+	 * Load descriptions of features from a separate file. format (one line):
 	 * feature:description
 	 * 
 	 * @param fileName
@@ -192,10 +203,22 @@ public class Features {
 
 	}
 
+	/**
+	 * Remove a feature. The index is not recalculated. You have to do this
+	 * separately by calling {@link #recalculateIndex()}
+	 * 
+	 * @param feature
+	 */
 	public void removeFeature(String feature) {
 		this.indicesByFeature.remove(feature);
 	}
 
+	/**
+	 * Add a feature. If you try to add an existing feature, this method has no
+	 * effect.
+	 * 
+	 * @param feature
+	 */
 	public void addFeature(String feature) {
 		if (!this.featuresByIndex.contains(feature)) {
 			this.featuresByIndex.add(feature);
@@ -204,7 +227,7 @@ public class Features {
 	}
 
 	/**
-	 * recalculate the index. this is typically done after removing some
+	 * Recalculate the index. this is typically done after removing some
 	 * features.
 	 */
 	public void recalculateIndex() {
@@ -217,7 +240,7 @@ public class Features {
 	}
 
 	/**
-	 * create a data set with an instance for each feature. An instance has only
+	 * Create a data set with an instance for each feature. An instance has only
 	 * one feature with the value 1.0
 	 * 
 	 * @return
@@ -232,10 +255,19 @@ public class Features {
 		return ds;
 	}
 
+	/**
+	 * Check if a feature exists in this feature set.
+	 * @param feature
+	 * @return
+	 */
 	public boolean hasFeature(String feature) {
 		return this.featuresByIndex.contains(feature);
 	}
 
+	/**
+	 * Get a copy of the list of all feature identifiers.
+	 * @return
+	 */
 	public List<String> getListOfFeaturesCopy() {
 		return new ArrayList<String>(this.featuresByIndex);
 	}
@@ -249,6 +281,13 @@ public class Features {
 		return ret;
 	}
 
+	/**
+	 * Create a feature set that has all features that exist in one of the
+	 * provided data sets.
+	 * 
+	 * @param dataSets
+	 * @return
+	 */
 	@SafeVarargs
 	public static Features createFromDataSets(DataSet<? extends Instance> ... dataSets) {
 		Features features = new Features();
@@ -260,6 +299,10 @@ public class Features {
 		return features;
 	}
 
+	/**
+	 * Create a deep copy of this feature list.
+	 * @return
+	 */
 	public Features copy() {
 		Features newF = new Features();
 		for (String feature : this.featuresByIndex)
@@ -268,6 +311,11 @@ public class Features {
 		return newF;
 	}
 
+	/**
+	 * Create a feature set for each class in the provided sparse data sets.
+	 * @param dataSets
+	 * @return
+	 */
 	@SafeVarargs
 	public static Map<String, Features> createFromDataSetsPerClass(DataSet<? extends SparseInstance> ... dataSets) {
 		Map<String, Features> features = new HashMap<String, Features>();
@@ -284,7 +332,7 @@ public class Features {
 	}
 
 	/**
-	 * Remove all features which only contain constant values or are highly
+	 * Remove all features that contain only constant values or are highly
 	 * correlated with another feature.
 	 * 
 	 * @param features
@@ -360,10 +408,18 @@ public class Features {
 		return newFeatures;
 	}
 
+	/**
+	 * Get all feature identifiers as a set of strings.
+	 * @return
+	 */
 	public Set<String> asSet() {
 		return this.indicesByFeature.keySet();
 	}
 
+	/**
+	 * Get all feature identifiers as a list of strings.
+	 * @return
+	 */
 	public List<String> asStringList() {
 		List<String> list = new ArrayList<String>();
 		for(int i = 0; i < this.size(); i++)

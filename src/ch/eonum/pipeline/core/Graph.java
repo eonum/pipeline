@@ -9,9 +9,10 @@ import java.util.Set;
  * Graph with nodes and edges. Nodes and edges can have attributes. Extends
  * SparseInstance. Hence the graph as a whole can have attributes.
  * 
- * Vector embedding (using graph edit distance to some prototypes) can be used
- * to fill up attributes in the sparse instance. Following vector embedding, all
- * standard classifiers and regressors can be used.
+ * Vector embedding (using graph edit distance {@link(GraphEditDistance)} to
+ * some prototypes) can be used to fill up attributes in the sparse instance.
+ * Following vector embedding, all standard classifiers and regressors can be
+ * used.
  * 
  * @author tim
  * 
