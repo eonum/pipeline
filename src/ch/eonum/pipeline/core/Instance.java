@@ -36,6 +36,11 @@ public abstract class Instance {
 		super();
 	}
 
+	/**
+	 * Constructor
+	 * @param id instance identifier
+	 * @param gt ground truth, class label for classification tasks.
+	 */
 	public Instance(String id, String gt) {
 		this.id = id;
 		this.groundTruth = gt;
@@ -56,11 +61,22 @@ public abstract class Instance {
 		instance.put(feature, value);
 	}
 
-	public void addAll(Instance member) {
-		for(String f : member.features())
-			this.put(f, member.get(f));
+	/**
+	 * Add all features of another instance to this instance. If a feature is
+	 * already present it will be overwritten.
+	 * 
+	 * @param instance
+	 */
+	public void addAll(Instance instance) {
+		for(String f : instance.features())
+			this.put(f, instance.get(f));
 	}
 
+	/**
+	 * Is a certain feature present.
+	 * @param feature
+	 * @return
+	 */
 	public abstract boolean hasFeature(String feature);
 
 	/**
@@ -73,8 +89,8 @@ public abstract class Instance {
 	public abstract void reduceFeatures(Features features);
 
 	/**
-	 * Set a new data map. All old values are discarded. The pointer to the old
-	 * data is being kept, which means that the map/vector itself is not deleted.
+	 * Set a new data map. All old values are discarded. The map/vector itself
+	 * is not deleted.
 	 * 
 	 * @param v
 	 *            new data
@@ -94,10 +110,14 @@ public abstract class Instance {
 
 	public abstract String toString();
 
+	/**
+	 * remove all 0 entries for better memory usage or to avoid division by zero
+	 * errors.
+	 */
 	public abstract void cleanUp();
 
 	/**
-	 * take the square root of each value. the instance is changed.
+	 * Take the square root of each value. the instance is changed.
 	 */
 	public void sqrt() {
 		for (String feature : this.features())
@@ -105,7 +125,7 @@ public abstract class Instance {
 	}
 
 	/**
-	 * take the natural log of each value + 1. the instance is changed.
+	 * Take the natural log of each value + 1. the instance is changed.
 	 */
 	public void log1p() {
 		for (String feature : this.features())
@@ -113,19 +133,24 @@ public abstract class Instance {
 	}
 
 	/**
-	 * take the power of each value. the instance is changed.
+	 * Take the power of each value. the instance is changed.
 	 */
 	public void pow(double power) {
 		for (String feature : this.features())
 			put(feature, Math.pow(get(feature), power));
 	}
 
+	/**
+	 * Deep copy of this instance.
+	 * 
+	 * @return
+	 */
 	public abstract Instance copy();
 
 	/**
-	 * multiply each feature. the instance is not changed. a newly created
-	 * instance is returned. inst2.times(inst1) == inst1.times(inst2) But for
-	 * better performance you should first put the instance with more features.
+	 * Multiply each feature. the instance is not changed. A newly created
+	 * instance is returned. inst2.times(inst1) == inst1.times(inst2). But for
+	 * better performance you should put the instance with more features first.
 	 * 
 	 * @param each
 	 * @return
@@ -142,7 +167,7 @@ public abstract class Instance {
 	}
 
 	/**
-	 * multiply each feature. the instance is changed.
+	 * Multiply each feature. The instance is changed.
 	 * 
 	 * @param each
 	 * @return
@@ -154,7 +179,7 @@ public abstract class Instance {
 	}
 
 	/**
-	 * multiply each feature with a factor. the instance is not changed. a newly
+	 * Multiply each feature with a factor. the instance is not changed. a newly
 	 * created instance is returned.
 	 * 
 	 * @param factor
@@ -171,7 +196,7 @@ public abstract class Instance {
 	}
 
 	/**
-	 * subtract instance i from this instance and return a new instance with the
+	 * Subtract instance i from this instance and return a new instance with the
 	 * result. the instance is not changed.
 	 * 
 	 * @param i
@@ -185,7 +210,7 @@ public abstract class Instance {
 	}
 
 	/**
-	 * subtract instance i from this instance. the instance is changed.
+	 * Subtract instance i from this instance. the instance is changed.
 	 * 
 	 * @param mean
 	 */
@@ -195,7 +220,7 @@ public abstract class Instance {
 	}
 	
 	/**
-	 * add an instance to this instance. the instance is changed.
+	 * Add an instance to this instance. the instance is changed.
 	 * 
 	 * @param inst
 	 */
@@ -205,7 +230,7 @@ public abstract class Instance {
 	}
 
 	/**
-	 * divide all features by divisor. the instance is changed.
+	 * Divide all features by divisor. the instance is changed.
 	 * 
 	 * @param divisor
 	 */
@@ -215,8 +240,8 @@ public abstract class Instance {
 	}
 
 	/**
-	 * divide by another instance. only features within divisor are being
-	 * divided. the instance is changed.
+	 * Divide by another instance. only features within divisor are divided. the
+	 * instance is changed.
 	 * 
 	 * @param divisor
 	 */
@@ -226,18 +251,44 @@ public abstract class Instance {
 				put(feature, get(feature) / divisor.get(feature));
 	}
 
+	/**
+	 * Remove a feature.
+	 * @param feature
+	 * @return
+	 */
 	public abstract double remove(String feature);
 
+	/**
+	 * Get all features present in this instance.
+	 * @return
+	 */
 	public abstract Set<String> features();
 
+	/**
+	 * Set the value of a feature.
+	 * 
+	 * @param feature
+	 * @param value
+	 */
 	public abstract void put(String feature, double value);
 
+	/**
+	 * Get the value of a feature.
+	 * 
+	 * @param feature
+	 * @return
+	 */
 	public abstract double get(String feature);
 	
+	/**
+	 * Convert this instance to a double array using the provided feature set.
+	 * @param features
+	 * @return
+	 */
 	public abstract double[] asArray(Features features);
 		
 	/**
-	 * store a prediction result.
+	 * Store a prediction result.
 	 * @param key
 	 * @param value
 	 */
@@ -248,7 +299,7 @@ public abstract class Instance {
 	}
 	
 	/**
-	 * get a prediction result / probability estimation / prediction accuracy. 
+	 * Get a prediction result / probability estimation / prediction accuracy. 
 	 * Depends on classification / regression model being used.
 	 * 
 	 * @param key
@@ -258,6 +309,12 @@ public abstract class Instance {
 		return (results == null || !results.containsKey(key)) ? 0.0 : results.get(key);
 	}
 
+	/**
+	 * Remove a result.
+	 * 
+	 * Use this to remove temporary results and to release memory.
+	 * @param key
+	 */
 	public void removeResult(String key) {
 		this.results.remove(key);
 	}
