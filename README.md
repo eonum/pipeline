@@ -8,46 +8,45 @@ The software can process simple vectors and sequences / time series data. Struct
 
 Below you can find a selection of pipeline modules.
 
-### Data structures
+#### Data structures
 * Vectors / Instances, sparse and dense implementations
 * Data Sets
 * Sequences / Time series, sparse and dense implentations
 * Graphs
 
-### Classifier / Regressors
+#### Classifier / Regressors
 * Random Forests / Decision Trees / CART
 * Neural Nets
 * Recurrent Neural Nets (Long Short Term Memory)
 * Support Vector Machines
 * Linear Regression
-* Logistic Regression
 * Gradient Boosting
 * Nearest Neighbor
 * Ensemble Methods (Bagging / Boosting)
 
-###Distance metrics
+#### Distance metrics
 * Euclid
 * Cosine Distance
 * Minkowski Distance
 * Graph Edit Distance
 * Polynomial Kernel
 
-###Optimization
+#### Optimization
 * Genetic Algorithms
 * Gradient descent
 
-###Clustering / Data Mining
+#### Clustering / Data Mining
 * Self organizing maps / Kohonen map
 * Gaussian Mixture Models
 * K-Means Clustering
 * EM Fuzzy Clustering
 
-###Transformators
+#### Transformators
 * Principal Component Analysis
 * Feature extraction and selection
 * Dynamic Time Warping
 
-###Validation
+#### Validation
 * k-fold cross validation
 * evaluation metrics (RMSE, AUC, Recognition Rate, LogLoss)
 * Validation of meta parameters of entire data pipelines.
