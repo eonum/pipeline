@@ -16,12 +16,12 @@ import ch.eonum.pipeline.util.FileUtil;
 
 /**
  * Long Short Term Memory Recurrent Neural Network for regression.
- * http://en.wikipedia.org/wiki/Long_short_term_memory
+ * http://en.wikipedia.org/wiki/Long_short_term_memory including forget gates.
  * 
  * Including n-fold cross validation.
  * 
  * @author tim
- *
+ * 
  */
 public class LSTM<E extends Sequence> extends Classifier<E> {
 	
@@ -333,22 +333,40 @@ public class LSTM<E extends Sequence> extends Classifier<E> {
 		norm = true;
 	}
 	
+	/**
+	 * Use output gates in the memory cell blocks (default: true)
+	 */
 	public void setOutputGateUse(boolean b){
 		outputGates = b;
 	}
 	
+	/**
+	 * Use forget gates in the memory cell blocks. (default: true)
+	 * @param b
+	 */
 	public void setForgetGateUse(boolean b){
 		forgetGates = b;
 	}
 	
+	/**
+	 * Use input gates in the memory cell blocks (default: true)
+	 * @param b
+	 */
 	public void setInputGateUse(boolean b){
 		inputGates = b;
 	}
 
+	/**
+	 * Get the largest training outcome for single value regression tasks.
+	 * @return
+	 */
 	public double getMaxOutcome() {
 		return this.maxOutcome;
 	}
 
+	/**
+	 * Use the dropout technique in training.
+	 */
 	public void doDropout() {
 		this.dropout = true;
 	}

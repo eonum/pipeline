@@ -6,6 +6,12 @@ import java.util.List;
 
 import ch.eonum.pipeline.core.Instance;
 
+/**
+ * Cosine Distance. See 
+ * @author tim
+ *
+ * @param <E>
+ */
 public class CosineDistance<E extends Instance> extends Distance<E> {
 
 	public CosineDistance() {

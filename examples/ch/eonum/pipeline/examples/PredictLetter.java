@@ -3,27 +3,22 @@ package ch.eonum.pipeline.examples;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import ch.eonum.pipeline.classification.lstm.LSTMClassifier;
 import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.DenseSequence;
 import ch.eonum.pipeline.core.Features;
-import ch.eonum.pipeline.core.Parameters;
 import ch.eonum.pipeline.core.SequenceDataSet;
 import ch.eonum.pipeline.evaluation.Evaluator;
 import ch.eonum.pipeline.evaluation.RecognitionRateSequence;
 import ch.eonum.pipeline.reader.LetterReader;
 import ch.eonum.pipeline.util.FileUtil;
-import ch.eonum.pipeline.util.Log;
-import ch.eonum.pipeline.validation.ParameterValidation;
 import ch.eonum.pipeline.validation.SystemValidator;
 
 /**
  * Toy experiment for the LSTM (Long Short Term Memory Recurrent Neural Network)
- * using artificial letter sequences.
+ * using artificial letter sequences. You can test the net by inventing your own
+ * letter patterns and by tweaking the meta parameters.
  * 
  * @author tim
  * 
@@ -60,7 +55,7 @@ public class PredictLetter {
 		
 		dims.writeToFile(resultsFolder + "features.txt");
 	
-		DataSet<DenseSequence> dataValidation = dataTraining;
+		DataSet<DenseSequence> dataValidation = dataTraining.extractSubSet(0.5);
 		Evaluator<DenseSequence> recRate = new RecognitionRateSequence<DenseSequence>();
 		
 		LSTMClassifier<DenseSequence> lstm = new LSTMClassifier<DenseSequence>();
@@ -75,10 +70,10 @@ public class PredictLetter {
 		
 		lstm.putParameter("numNets", 1.0);
 		lstm.putParameter("numNetsTotal", 1.0);
-		lstm.putParameter("numLSTM", 8.0);
+		lstm.putParameter("numLSTM", 2.0);
 		lstm.putParameter("memoryCellBlockSize", 2.0);
 		lstm.putParameter("numHidden", 0.0);
-		lstm.putParameter("maxEpochsAfterMax", 1000);
+		lstm.putParameter("maxEpochsAfterMax", 50);
 		lstm.putParameter("maxEpochs", 1000);
 		lstm.putParameter("learningRate", 0.01);
 		lstm.putParameter("batchSize", 1.0);
@@ -88,28 +83,10 @@ public class PredictLetter {
 		lstm.setTestSet(dataValidation);
 		lstm.setTrainingSet(dataTraining);
 		SystemValidator<DenseSequence> lstmSystem = new SystemValidator<DenseSequence>(lstm, recRate);
-		lstmSystem.setBaseDir(resultsFolder);
+		lstmSystem.setBaseDir(resultsFolder);	
 		
-		List<ParameterValidation> paramsGradientAscent = new ArrayList<ParameterValidation>();
-		
-		paramsGradientAscent.add(new ParameterValidation(new Parameters[] {
-				lstm }, "numLSTM", 1.0, 8.0, 1.0,
-				20.0, 2.0, 1.0, false));
-		paramsGradientAscent.add(new ParameterValidation(new Parameters[] {
-				lstm }, "learningRate", -14, -2, -8,
-				0.0, 0.01, 1.0, true));
-		paramsGradientAscent.add(new ParameterValidation(new Parameters[] {
-				lstm }, "memoryCellBlockSize", 1.0, 8.0, 1.0,
-				20.0, 1.0, 1.0, false));
-		
-
-		Map<ParameterValidation, Double> params = lstmSystem.gradientAscent(paramsGradientAscent, 5, resultsFolder + "parameter_validation/");
-		Log.puts("Optimal Parameters: " + params);
-		ParameterValidation.updateParameters(params);		
-		
-		lstmSystem.evaluate(true, "nn-all");
+		lstmSystem.evaluate(true, "letters-lstm");
 		System.out.println("Optimum: " + recRate.evaluate(dataValidation));
-
 	}
 		
 }
