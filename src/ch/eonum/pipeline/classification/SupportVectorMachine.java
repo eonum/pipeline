@@ -21,7 +21,7 @@ import ch.eonum.pipeline.util.Log;
 
 
 /**
- * SVM wrapper for the libsvm implementation in package {@link ch.eonum.pipeline.classification.libsvm.SVM}.
+ * SVM wrapper for the libsvm implementation.
  * @author tim
  *
  */

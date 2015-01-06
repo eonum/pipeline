@@ -22,7 +22,7 @@ import ch.eonum.pipeline.analysis.ClassProbability;
 import Jama.Matrix;
 
 /**
- * DataSet holding. A vector of instances.
+ * A data set is a vector of instances.
  * 
  * @author tim
  * 
@@ -31,6 +31,9 @@ public class DataSet<E extends Instance> extends Vector<E> implements List<E> {
 
 	private static final long serialVersionUID = -5639580196102995883L;
 
+	/**
+	 * Empty constructor.
+	 */
 	public DataSet() {}
 
 	/**

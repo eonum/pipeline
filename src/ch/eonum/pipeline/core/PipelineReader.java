@@ -3,7 +3,7 @@ package ch.eonum.pipeline.core;
 import java.io.File;
 
 /**
- * read a dataset in the pipeline format.
+ * Read a data set in the pipeline format. Produces SparseInstances.
  * @author tim
  *
  */

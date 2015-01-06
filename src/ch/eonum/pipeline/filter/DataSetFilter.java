@@ -7,7 +7,7 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.SparseInstance;
 
 /**
- * Filter configuration which can be applied to a dataset.
+ * Filter configuration which can be applied to a data set.
  * 
  * @author tim
  * 
