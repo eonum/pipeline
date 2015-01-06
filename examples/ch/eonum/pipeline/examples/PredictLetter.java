@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ch.eonum.pipeline.classification.lstm.LSTMClassifier;
 import ch.eonum.pipeline.core.DataSet;
@@ -16,12 +17,20 @@ import ch.eonum.pipeline.evaluation.Evaluator;
 import ch.eonum.pipeline.evaluation.RecognitionRateSequence;
 import ch.eonum.pipeline.reader.LetterReader;
 import ch.eonum.pipeline.util.FileUtil;
+import ch.eonum.pipeline.util.Log;
 import ch.eonum.pipeline.validation.ParameterValidation;
 import ch.eonum.pipeline.validation.SystemValidator;
 
+/**
+ * Toy experiment for the LSTM (Long Short Term Memory Recurrent Neural Network)
+ * using artificial letter sequences.
+ * 
+ * @author tim
+ * 
+ */
 public class PredictLetter {
-	public static final String dataset = "data-lstm-letter/sequence.txt";
-	public static final String resultsFolder = "data-lstm-letter/bookletter-lines/";
+	public static final String dataset = "examples/results/letters.txt";
+	public static final String resultsFolder = "examples/results/letters/";
 	public static final char[] allowedChars = new char[] { 'a', 'b', 'c', 'd', 'f', '\n'};/*,
 			'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
 			'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'ä', 'ö', 'ü', '.',
@@ -46,23 +55,6 @@ public class PredictLetter {
 		
 		SequenceDataSet<DenseSequence> dataTraining = LetterReader.readTraining(dataset, true, false, allowedCharMap);
 		dataTraining.setTimeLag(1, allowedCharMap);
-		
-//		Map<Character, Integer> charCount = new HashMap<Character, Integer>();
-//		for(int i = 0; i < allowedChars.length; i++)
-//			charCount.put(allowedChars[i], 0);
-//		int total = 0;
-//		for(Instance e : dataTraining){
-//			Sequence s = (Sequence)e;
-//			total += s.getSequenceLength();
-//			for(Character c : allowedChars){
-//				for(int i = 0; i < s.getSequenceLength(); i++)
-//					if(s.get(i, "" + c) > 0.5)
-//						charCount.put(c, charCount.get(c) + 1);
-//			}
-//		}
-//		for(Character c : charCount.keySet())
-//			System.out.println("Frequency for " + c + ": " + charCount.get(c)/(double)total);
-//		System.exit(0);
 			
 		Features dims = Features.createFromDataSets(dataTraining);
 		
@@ -111,9 +103,9 @@ public class PredictLetter {
 				20.0, 1.0, 1.0, false));
 		
 
-//		Map<ParameterValidation, Double> params = lstmSystem.gradientAscent(paramsGradientAscent, 5, resultsFolder + "parameter_validation/");
-//		Log.puts("Optimal Parameters: " + params);
-//		ParameterValidation.updateParameters(params);		
+		Map<ParameterValidation, Double> params = lstmSystem.gradientAscent(paramsGradientAscent, 5, resultsFolder + "parameter_validation/");
+		Log.puts("Optimal Parameters: " + params);
+		ParameterValidation.updateParameters(params);		
 		
 		lstmSystem.evaluate(true, "nn-all");
 		System.out.println("Optimum: " + recRate.evaluate(dataValidation));

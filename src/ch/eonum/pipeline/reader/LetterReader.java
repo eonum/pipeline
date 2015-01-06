@@ -16,7 +16,7 @@ public class LetterReader {
 
 	/**
 	 * 
-	 * @param dataset
+	 * @param filename
 	 * @param predictionAfter begin prediction after X letters
 	 * @param lineByLine make one sequence for each line
 	 * @param addNewLine add line breaks as letters
@@ -24,12 +24,12 @@ public class LetterReader {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static SequenceDataSet<DenseSequence> readTraining(String dataset, boolean lineByLine, 
+	public static SequenceDataSet<DenseSequence> readTraining(String filename, boolean lineByLine, 
 			boolean addNewLine, Features features) throws IOException,
 			ParseException {
 		SequenceDataSet<DenseSequence> data = new SequenceDataSet<DenseSequence>();
 		
-		FileInputStream fstream = new FileInputStream(dataset);
+		FileInputStream fstream = new FileInputStream(filename);
 
 		DataInputStream in = new DataInputStream(fstream);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
