@@ -18,6 +18,8 @@ import java.util.Set;
  * which can be used in the sparse sequence, such as adding elements to the
  * sequence, are disabled in order to provide better performance.
  * 
+ * See also {@link Sequence}
+ * 
  * @author tim
  * 
  */
