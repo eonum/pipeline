@@ -8,6 +8,17 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.util.Gnuplot;
 
+/**
+ * Recognition rate. Percentage [0,1] of correctly labeled instances in a
+ * classification task.
+ * 
+ * Additional data is collected to produce an oracle (number of k best ranked
+ * classes)
+ * 
+ * @author tim
+ * 
+ * @param <E>
+ */
 public class RecognitionRate<E extends Instance> implements Evaluator<E> {
 	/**
 	 * number of k best ranked classes taking into account when doing k best
@@ -62,6 +73,11 @@ public class RecognitionRate<E extends Instance> implements Evaluator<E> {
 		}
 	}
 	
+	/**
+	 * Gather data for an oracle and gnuplot the results.
+	 * @param k
+	 * @param classes
+	 */
 	public void doKBestOracle(int k, Set<String> classes){
 		this.k = k;
 		this.classes = classes;

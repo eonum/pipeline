@@ -10,11 +10,13 @@ import ch.eonum.pipeline.util.Gnuplot;
 
 
 /**
- * print a histogram for the two class problem.
- * probability measures have to be provided.
- * some metrics are being written to metrics.txt
+ * print a histogram for the two class problem. probability measures have to be
+ * provided. some metrics are written to metrics.txt. This evaluator cannot be
+ * used in optimization tasks as it does not give you a single value. It is
+ * meant to be used for additional manual analysis.
+ * 
  * @author tim
- *
+ * 
  */
 public class Histograms<E extends Instance> implements Evaluator<E>  {
 
@@ -140,6 +142,7 @@ public class Histograms<E extends Instance> implements Evaluator<E>  {
 			e.printStackTrace();
 		}
 	}
+	
 	protected void calculateMinMax() {
 		for (Instance inst : dataset) {
 			double value = inst.getResult("result");

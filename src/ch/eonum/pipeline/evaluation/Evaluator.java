@@ -4,8 +4,8 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Instance;
 
 /**
- * Interface for all classes in this package. In many classifiers and
- * optimizers, especially meta classifiers, an evaluator has to be provided.
+ * Interface for all classes in this package. In many classifiers (especially
+ * meta classifiers) and almost all optimizers, an evaluator has to be provided.
  * 
  * @author tim
  * 
@@ -13,7 +13,7 @@ import ch.eonum.pipeline.core.Instance;
  */
 public interface Evaluator<E extends Instance> {
 	/**
-	 * evaluate a dataset and return the main measure. The higher the evaluation
+	 * evaluate a data set and return the main measure. The higher the evaluation
 	 * measure, the better. Optimization algorithms maximize this measure. If
 	 * you have a measure to be minimized, return the negative value.
 	 * 

@@ -3,6 +3,15 @@ package ch.eonum.pipeline.evaluation;
 import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Sequence;
 
+/**
+ * Recognition rate for sequences with ground truth sequences. If you have
+ * sequences with only one class label for each sequence you can use the
+ * standard {@link RecognitionRate}.
+ * 
+ * @author tim
+ * 
+ * @param <E>
+ */
 public class RecognitionRateSequence<E extends Sequence> implements Evaluator<E> {
 
 	@Override
@@ -43,14 +52,12 @@ public class RecognitionRateSequence<E extends Sequence> implements Evaluator<E>
 
 	@Override
 	public void printResults(String fileName) {
-		// TODO Auto-generated method stub
-
+		// do nothing
 	}
 
 	@Override
 	public void printResultsAndGnuplot(String fileName) {
-		// TODO Auto-generated method stub
-
+		// do nothing
 	}
 
 }

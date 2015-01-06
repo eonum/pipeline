@@ -4,7 +4,7 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Instance;
 
 /**
- * Log loss metric.
+ * Log loss evaluation metric.
  * @author tim
  *
  */

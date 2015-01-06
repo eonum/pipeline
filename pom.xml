@@ -40,4 +40,8 @@
   		<version>3.17</version>
   	</dependency>
   </dependencies>
+  <organization>
+  	<name>eonum</name>
+  	<url>http://www.eonum.net</url>
+  </organization>
 </project>

@@ -12,12 +12,12 @@ import ch.eonum.pipeline.util.Log;
 
 
 /**
- * calculate the area under curve for a two-class problem.
- * Preconditions: Two classes: "1" (should not be selected) and "0" (should be selected)
- * In the feature "result" there is a likelihood which should be higher for class "1"
+ * Calculate the area under curve for a two-class problem. Preconditions: Two
+ * classes: "1" and "0". The "result" result should indicate the probability of
+ * class "1".
  * 
  * @author tim
- *
+ * 
  */
 public class AreaUnderCurve<E extends Instance> implements Evaluator<E> {
 
@@ -49,20 +49,24 @@ public class AreaUnderCurve<E extends Instance> implements Evaluator<E> {
 		}
 	}
 
+	/**
+	 * calculate the are under curve.
+	 */
 	private void calculateAUC() {
 		this.auc = 0.0;
 		this.printList = new ArrayList<String>();
 		double lastx = 1.0;
 		double lasty = 1.0;
-		for (int i = -1; i < 401; i++) { // iterate over all possible
-											// likelihood values
+		/** iterate over all likelihood values using 400 steps. */
+		for (int i = -1; i < 401; i++) {
 			double threshold = min + (max - min) * (i / 400.0);
 			int true_positive = 0;
 			int true_negative = 0;
 			int false_positive = 0;
 			int false_negative = 0;
 			for (Instance inst : dataset) {
-				double result = inst.label.equals("0") ? inst.getResult("result") : -inst.getResult("result");
+				double result = inst.label.equals("0") ? inst
+						.getResult("result") : -inst.getResult("result");
 				if (result > threshold
 						&& "0".equals(inst.groundTruth))
 					true_positive++;
@@ -91,11 +95,14 @@ public class AreaUnderCurve<E extends Instance> implements Evaluator<E> {
 		}
 	}
 
-	
-	
+	/**
+	 * Calculate the maximum and the minimum value for the output
+	 * probability/likelihood.
+	 */
 	protected void calculateMinMax() {
 		for (Instance inst : dataset) {
-			double value = "0".equals(inst.label) ? inst.getResult("result") : -inst.getResult("result");
+			double value = "0".equals(inst.label) ? inst.getResult("result")
+					: -inst.getResult("result");
 			if (value > max)
 				max = value;
 			if (value < min)
