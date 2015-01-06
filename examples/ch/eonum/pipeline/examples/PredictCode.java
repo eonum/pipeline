@@ -63,7 +63,7 @@ public class PredictCode {
 		
 		dims.writeToFile(resultsFolder + "features.txt");
 	
-		DataSet<DenseSequence> dataValidation = dataTraining;
+		DataSet<DenseSequence> dataValidation = dataTraining.extractSubSet(0.3);
 		Evaluator<DenseSequence> recRate = new RecognitionRateSequence<DenseSequence>();
 		
 		LSTMClassifier<DenseSequence> lstm = new LSTMClassifier<DenseSequence>();
@@ -78,8 +78,8 @@ public class PredictCode {
 		/** parameterization of the LSTM. */
 		lstm.putParameter("numNets", 1.0);
 		lstm.putParameter("numNetsTotal", 1.0);
-		lstm.putParameter("numLSTM", 4.0);
-		lstm.putParameter("memoryCellBlockSize", 2.0);
+		lstm.putParameter("numLSTM", 8.0);
+		lstm.putParameter("memoryCellBlockSize", 6.0);
 		lstm.putParameter("numHidden", 0.0);
 		lstm.putParameter("maxEpochsAfterMax", 50);
 		lstm.putParameter("maxEpochs", 55);

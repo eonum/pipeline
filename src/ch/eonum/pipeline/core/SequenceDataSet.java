@@ -1,9 +1,22 @@
 package ch.eonum.pipeline.core;
 
+/**
+ * Sequence data set. Extends DataSet by sequence specific transformations.
+ * 
+ * @author tim
+ *
+ * @param <E>
+ */
 public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 
 	private static final long serialVersionUID = -6190330850640598339L;
 	
+	/**
+	 * Create from standard data set. Many readers read standard data sets only
+	 * and hence have to be transformed into a SequenceDataSet
+	 * 
+	 * @param data
+	 */
 	public SequenceDataSet(DataSet<E> data) {
 		this.addAll(data);
 	}
@@ -13,8 +26,7 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	/**
 	 * Level/Flat the time series data. By leveling, a sequence can be used with
 	 * standard classifiers which cannot process time series. Level Average, Max
-	 * and Min
-	 * 
+	 * and Min. 
 	 */
 	public void levelSequences() {
 		for (Sequence each : this) {
@@ -41,7 +53,7 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	/**
 	 * Level/Flat the time series data. By leveling, a sequence can be used with
 	 * standard classifiers which cannot process time series. Level Average,
-	 * Max, Min and Standard deviation and center of mass
+	 * Max, Min, standard deviation and center of mass
 	 */
 	public void levelSequencesAllwithCOM(Features features) {
 		for (Sequence each : this) {
@@ -58,6 +70,8 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	 * standard classifiers which cannot process time series. Level a time
 	 * window: precondition: every sequence must have the same length. For each
 	 * element in the sequence a new set of features is created.
+	 * 
+	 * @see Sequence#levelTimeWindow()
 	 */
 	public void levelSequencesTimeWindow() {
 		for (Sequence each : this) {
@@ -68,6 +82,8 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	/**
 	 * Inverse operation to levelSequences. Push all data in the flat instance
 	 * to each time point in a sequence.
+	 * 
+	 * @see Sequence#pushUp()
 	 */
 	public void pushUp() {
 		for (Sequence each : this) {
@@ -86,10 +102,12 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	
 	/**
 	 * Return a data set with all sequences unrolled as instances. No copies of
-	 * data is been made. Hence operations on the resulting data set affect this
+	 * data is made. Hence operations on the resulting data set affect this
 	 * data set. This is convenient to apply feature transformations like
 	 * normalizations, which have been designed for instance data sets, on
 	 * sequence data.
+	 * 
+	 * @see Sequence#getDataSetFromTimePoints()
 	 * 
 	 * @return
 	 */
@@ -102,7 +120,8 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	
 	/**
 	 * invert the temporal order of all sequences in this data set.
-	 * Precondition: all instances in this data set are sequences.
+	 * 
+	 * @see Sequence#invertTemporalOrder()
 	 */
 	public void invertSequences() {
 		for (Sequence each : this)
@@ -112,6 +131,8 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	/**
 	 * push the master (instance) data on top of the sequence data.
 	 * Precondition: all instances in this data set are sequences.
+	 * 
+	 * @see Sequence#pushMasterOnTop()
 	 */
 	public void pushMasterOnTop() {
 		for (Sequence each : this)
@@ -121,6 +142,8 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	/**
 	 * put the master (instance) data at the bottom of the sequence data.
 	 * Precondition: all instances in this data set are sequences.
+	 * 
+	 * @see Sequence#putMasterAtBottom()
 	 */
 	public void putMasterAtBottom() {
 		for (Sequence each : this)
@@ -128,18 +151,22 @@ public class SequenceDataSet<E extends Sequence> extends DataSet<E> {
 	}
 
 	/**
-	 * add a copy of the sequence at the end of the sequence. Some extra context
+	 * Add a copy of the sequence at the end of the sequence. Some extra context
 	 * in both directions can be obtained by this.
+	 * 
+	 * @see Sequence#duplicateSequence()
 	 */
-	public void doubleSequences() {
+	public void duplicateSequences() {
 		for (Sequence each : this)
-			each.doubleSequence();
+			each.duplicateSequence();
 	}
 
 	/**
 	 * create a target sequence for each sequence by copying the sequence with a
 	 * given time lag. Hence we can can train to predict the sequence. The last
 	 * timeLag points will be NaN, because we do not know the targets.
+	 * 
+	 * @see Sequence#createTargetForPrediction(int, Features)
 	 * 
 	 * @param timeLag
 	 *            in number of points in time.

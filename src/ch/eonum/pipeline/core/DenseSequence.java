@@ -206,7 +206,7 @@ public class DenseSequence extends Sequence {
 	}
 	
 	@Override
-	public void doubleSequence(){
+	public void duplicateSequence(){
 		double[][] newSeq = new double[sequence.length*2][sequence[0].length];
 		for (int i = 0; i < sequence.length; i++){
 			newSeq[i] = sequence[i];

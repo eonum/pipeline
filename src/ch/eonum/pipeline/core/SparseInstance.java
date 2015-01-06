@@ -11,8 +11,7 @@ import ch.eonum.pipeline.util.Log;
 import ch.eonum.pipeline.util.json.JSONable;
 
 /**
- * An instance is holding one data element with a class label and id. A dataset
- * is a set of instances.
+ * Sparse implementation of an {@link Instance} using a map.
  * 
  * @see Dataset
  * 
@@ -22,7 +21,7 @@ import ch.eonum.pipeline.util.json.JSONable;
 public class SparseInstance extends Instance implements JSONable, Cloneable {
 	private static Pattern pattern;
 
-	/** sparse vector holding all dimensions unlike zero of this instance. */
+	/** sparse vector holding all features unlike zero of this instance. */
 	protected Map<String, Double> vector;
 	/**
 	 * Constructor
@@ -120,7 +119,7 @@ public class SparseInstance extends Instance implements JSONable, Cloneable {
 	 * @return
 	 */
 	public static SparseInstance parse(String line) {
-		// lazy initialization
+		/** lazy initialization. */
 		if (pattern == null)
 			pattern = Pattern
 					.compile("\\[Id: ([^\\s]*) GroundTruth: ([^\\s]*) label: ([^\\\\s]*) Features: \\{([^\\}]*)\\}\\]");
@@ -189,6 +188,11 @@ public class SparseInstance extends Instance implements JSONable, Cloneable {
 		return values;
 	}
 	
+	/**
+	 * Get an {@link Entry} array with the provided features from this instance.
+	 * @param features
+	 * @return
+	 */
 	public Entry[] asEntryArray(Features features) {
 		Set<String> set = new HashSet<String>();
 		for (String feature : this.features())

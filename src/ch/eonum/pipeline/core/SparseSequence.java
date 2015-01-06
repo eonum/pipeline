@@ -17,6 +17,8 @@ import java.util.Set;
  * length as the sequence. The data in the inherited data fields of Instance
  * represent the master data.
  * 
+ * @see Sequence
+ * 
  * @author tim
  * 
  */
@@ -28,6 +30,7 @@ public class SparseSequence extends Sequence {
 	 * stored in Instance.groundtruth.
 	 */
 	private List<List<Double>> groundTruthSequence;
+	/** result sequence. */
 	private List<List<Double>> sequenceResults;
 
 	public SparseSequence(String id, String gt, Map<String, Double> vector) {
@@ -49,72 +52,37 @@ public class SparseSequence extends Sequence {
 			this.groundTruthSequence = new ArrayList<List<Double>>(seq.groundTruthSequence);
 	}
 	
-	/**
-	 * add a time point.
-	 * @param point
-	 */
 	@Override
 	public void addTimePoint(Map<String, Double> point){
 		this.sequence.add(point);
 	}
 	
-	/**
-	 * Get the sequence length / number of time steps.
-	 * @return
-	 */
 	@Override
 	public int getSequenceLength(){
 		return this.sequence.size();
 	}
 	
-	/**
-	 * Set the value of a feature of a time point.
-	 * @param t time point
-	 * @param feature
-	 * @param value
-	 */
 	@Override
 	public void put(int t, String feature, double value){
 		this.sequence.get(t).put(feature, value);
 	}
 	
-	/**
-	 * get a feature from time point t:
-	 * @param t
-	 * @param feature
-	 * @return
-	 */
 	@Override
 	public double get(int t, String feature){
 		return this.sequence.get(t).containsKey(feature) ? this.sequence.get(t)
 				.get(feature) : 0.0;
 	}
 
-	/**
-	 * 
-	 * @param t time
-	 * @param f output feature
-	 * @return
-	 */
 	@Override
 	public double groundTruthAt(int t, int f) {
 		return groundTruthSequence.get(t).get(f);
 	}
 	
-	/**
-	 * initialize the groundtruth sequence.
-	 */
 	@Override
 	public void initGroundTruthSequence() {
 		this.groundTruthSequence = new ArrayList<List<Double>>();
 	}
 
-	/**
-	 * set the ground truth at point (t|f)
-	 * @param t time point
-	 * @param f output feature
-	 * @param result value
-	 */
 	@Override
 	public void addGroundTruth(int t, int f, double result) {
 		this.groundTruthSequence.get(t).set(f, result);
@@ -129,10 +97,6 @@ public class SparseSequence extends Sequence {
 		this.groundTruthSequence.add(groundTruth);
 	}
 
-	/**
-	 * Sort the time points according the specified feature.
-	 * @param feature
-	 */
 	@Override
 	public void sortTimePoints(final String feature) {
 		Collections.sort(this.sequence, new Comparator<Map<String, Double>>(){
@@ -144,12 +108,8 @@ public class SparseSequence extends Sequence {
 		});
 	}
 	
-	/**
-	 * add a copy of the sequence at the end of the sequence. Some extra context
-	 * in both directions can be obtained by this.
-	 */
 	@Override
-	public void doubleSequence(){
+	public void duplicateSequence(){
 		int l = sequence.size();
 		for (int i = 0; i < l; i++)
 			sequence.add(sequence.get(i));
@@ -203,9 +163,6 @@ public class SparseSequence extends Sequence {
 		this.put("seqLength", this.sequence.size());
 	}
 	
-	/**
-	 * standard deviation
-	 */
 	@Override
 	public void levelStd() {
 		Set<String> sequenceFeatures = new HashSet<String>();
@@ -230,10 +187,6 @@ public class SparseSequence extends Sequence {
 			this.put(feature, Math.sqrt(this.get(feature)/this.sequence.size()));
 	}
 	
-	/**
-	 * get the normed (by sequence length) center of mass of all features in the given features object.
-	 * @param features
-	 */
 	@Override
 	public void levelCenterOfMass(Features features) {
 			for (int f = 0; f < features.size(); f++) {
@@ -257,11 +210,6 @@ public class SparseSequence extends Sequence {
 			}
 	}
 	
-	/**
-	 * create a new feature for each point in time and feature. This is only
-	 * feasible for fixed length and small sequences. (e.g. digit images 32x32
-	 * pixels)
-	 */
 	@Override
 	public void levelTimeWindow() {
 		for(int i = 0; i < sequence.size(); i++){
@@ -275,10 +223,6 @@ public class SparseSequence extends Sequence {
 		this.sequence = new ArrayList<Map<String, Double>>();
 	}
 
-	/**
-	 * Push all information in the flat instance to all data points
-	 * in the time series.
-	 */
 	@Override
 	public void pushUp() {
 		for(String feature : vector.keySet())
@@ -286,12 +230,6 @@ public class SparseSequence extends Sequence {
 				point.put(feature, this.get(feature));
 	}
 
-	/**
-	 * Get a data set where each time point is a single instance. All data is
-	 * copied and no references to this sequence being kept.
-	 * 
-	 * @return
-	 */
 	@Override
 	public DataSet<SparseInstance> createDataSetFromTimePoints() {
 		DataSet<SparseInstance> set = new DataSet<SparseInstance>();
@@ -306,15 +244,6 @@ public class SparseSequence extends Sequence {
 		return set;
 	}
 	
-	/**
-	 * Get a data set where each time point is a single instance. The instances
-	 * hold the same feature maps as the time points. No copies are beigin made.
-	 * 
-	 * You can use this to apply basic feature transformers. (Normalization, PCA
-	 * ..) or to speed up a write-only process.
-	 * 
-	 * @return
-	 */
 	@Override
 	public DataSet<SparseInstance> getDataSetFromTimePoints() {
 		DataSet<SparseInstance> set = new DataSet<SparseInstance>();
@@ -349,13 +278,6 @@ public class SparseSequence extends Sequence {
 		Collections.shuffle(this.sequence);
 	}
 
-	/**
-	 * group / summarize all time points with the same value
-	 * of feature groupFeature.
-	 * After grouping, the sequence is sorted according groupFeature.
-	 * 
-	 * @param groupFeature
-	 */
 	@Override
 	public void groupBy(String groupFeature) {
 		List<Map<String, Double>> seq = this.sequence;
@@ -419,12 +341,6 @@ public class SparseSequence extends Sequence {
 		return inst;
 	}
 	
-	/**
-	 * exchange a certain feature with another instance.
-	 * Used for randomization (random permutation) of certain features.
-	 * @param feature
-	 * @param instance
-	 */
 	@Override
 	public void exchangeFeature(String feature, Instance instance) {
 		super.exchangeFeature(feature, instance);
@@ -452,9 +368,6 @@ public class SparseSequence extends Sequence {
 		return super.remove(feature);
 	}
 
-	/**
-	 * initialize the sequence results in the proper size and filled with NaN.
-	 */
 	@Override
 	public void initSequenceResults() {
 		this.sequenceResults = new ArrayList<List<Double>>();
@@ -466,35 +379,17 @@ public class SparseSequence extends Sequence {
 		}
 	}
 
-	/**
-	 * set the result at point (t|f)
-	 * @param t time point
-	 * @param f output feature
-	 * @param result value
-	 */
 	@Override
 	public void addSequenceResult(int t, int f, double result) {
 		if(sequenceResults != null)
 			this.sequenceResults.get(t).set(f, result);
 	}
 
-	/**
-	 * get the sequence result at time point t and output feature f
-	 * 
-	 * @param t
-	 * @param f
-	 * @return
-	 */
 	@Override
 	public double resultAt(int t, int f) {
 		return this.sequenceResults.get(t).get(f);
 	}
 
-	/**
-	 * get a dense representation of the input sequence.
-	 * @param features
-	 * @return
-	 */
 	@Override
 	public double[][] getDenseRepresentation(Features features) {
 		int length = Math.max(1, this.getSequenceLength());
@@ -513,16 +408,6 @@ public class SparseSequence extends Sequence {
 		return (groundTruthSequence != null && groundTruthSequence.size() == sequence.size());
 	}
 	
-	/**
-	 * create a target sequence for each sequence by copying the sequence
-	 * with a given time lag. Hence we can can train to predict the sequence.
-	 * The first timeLag points will be NaN, because we cannot predict anything
-	 * yet.
-	 * 
-	 * @param timeLag
-	 *            in number of points in time.
-	 * @param features 
-	 */
 	@Override
 	public void createTargetForPrediction(int timeLag, Features features) {
 		this.groundTruthSequence = new ArrayList<List<Double>>();
@@ -544,12 +429,6 @@ public class SparseSequence extends Sequence {
 		assert(this.groundTruthSequence.size() == this.sequence.size());
 	}
 
-	/**
-	 * number of outputs. This is the number of classes in a classification
-	 * task.
-	 * 
-	 * @return
-	 */
 	@Override
 	public int outputSize() {
 		if(groundTruthSequence == null)
@@ -557,10 +436,6 @@ public class SparseSequence extends Sequence {
 		return this.groundTruthSequence.get(0).size();
 	}
 
-	/**
-	 * Do we have a ground truth sequence. 
-	 * @return
-	 */
 	@Override
 	public boolean hasGroundTruthSequence() {
 		return this.groundTruthSequence != null;
@@ -574,7 +449,7 @@ public class SparseSequence extends Sequence {
 	}
 
 	/**
-	 * remove time point t in input and groundtruth.
+	 * Remove time point t in input and groundtruth.
 	 * @param i
 	 */
 	public void removeSequenceElementAt(int t) {
@@ -585,7 +460,7 @@ public class SparseSequence extends Sequence {
 	/**
 	 * Get a sparse representation of the input features using Entries.
 	 * @param features
-	 * @param bias add an addditional feature with value 1.0
+	 * @param bias add an additional feature with value 1.0
 	 * @return
 	 */
 	public Entry[][] getSparseRepresentation(Features features, boolean bias){
@@ -607,8 +482,13 @@ public class SparseSequence extends Sequence {
 		return entries;		
 	}
 
-	public Map<String, Double> getTimePoint(int i) {
-		return this.sequence.get(i);
+	/**
+	 * Get time point t
+	 * @param t
+	 * @return
+	 */
+	public Map<String, Double> getTimePoint(int t) {
+		return this.sequence.get(t);
 	}
 
 }

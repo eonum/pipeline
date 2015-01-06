@@ -98,7 +98,8 @@ public abstract class Sequence extends SparseInstance {
 
 	/**
 	 * Get the number of dimensions in the output/ground truth sequence. Returns
-	 * 1 if there is no ground truth sequence.
+	 * 1 if there is no ground truth sequence. This is the number of classes in
+	 * a classification task.
 	 * 
 	 * @return
 	 */
@@ -188,10 +189,10 @@ public abstract class Sequence extends SparseInstance {
 
 	/**
 	 * Get a data set where each time point is a single instance. The instances
-	 * hold the same feature maps as the time points.
+	 * hold the same feature maps as the time points. No copies are made.
 	 * 
 	 * You can use this to apply basic feature transformers. (Normalization, PCA
-	 * ..)
+	 * ..) or to speed up a read-only process.
 	 * 
 	 * @return
 	 */
@@ -210,7 +211,9 @@ public abstract class Sequence extends SparseInstance {
 
 	/**
 	 * Put all information in the input sequence into the instance by adding a
-	 * prefix t to each feature. The prefix is equals to each time point.
+	 * prefix t to each feature. The prefix is equals to each time point. This
+	 * is only feasible for fixed length and small sequences. (e.g. digit images
+	 * 32x32 pixels)
 	 */
 	public abstract void levelTimeWindow();
 
@@ -252,7 +255,7 @@ public abstract class Sequence extends SparseInstance {
 	/**
 	 * Duplicate the input sequence. Append a copy to the end.
 	 */
-	public abstract void doubleSequence();
+	public abstract void duplicateSequence();
 	
 	/**
 	 * Sort the time points according the specified feature in ascending order.
@@ -263,10 +266,13 @@ public abstract class Sequence extends SparseInstance {
 	/**
 	 * Create a ground truth sequence for standard prediction tasks where the
 	 * outcome should be identical to the future input. E.g. Weather forecast
-	 * based on current weather.
+	 * based on current weather. The first timeLag points within the ground
+	 * truth sequence will be NaN, because we cannot predict anything yet.
 	 * 
-	 * @param timeLag number of time points we want to look into the future.
-	 * @param features features that should be predicted. (>= 1)
+	 * @param timeLag
+	 *            number of time points we want to look into the future.
+	 * @param features
+	 *            features that should be predicted. (>= 1)
 	 */
 	public abstract void createTargetForPrediction(int timeLag, Features features);
 
