@@ -10,9 +10,9 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Features;
 import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.core.SparseInstance;
-import ch.eonum.pipeline.core.PipelineReader;
 import ch.eonum.pipeline.distance.Distance;
 import ch.eonum.pipeline.distance.EuclidianDistance;
+import ch.eonum.pipeline.reader.PipelineReader;
 import ch.eonum.pipeline.util.Log;
 
 /**

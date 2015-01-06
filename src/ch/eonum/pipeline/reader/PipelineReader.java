@@ -1,6 +1,9 @@
-package ch.eonum.pipeline.core;
+package ch.eonum.pipeline.reader;
 
 import java.io.File;
+
+import ch.eonum.pipeline.core.DataSet;
+import ch.eonum.pipeline.core.SparseInstance;
 
 /**
  * Read a data set in the pipeline format. Produces SparseInstances.

@@ -1,9 +1,13 @@
-package ch.eonum.pipeline.core;
+package ch.eonum.pipeline.reader;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+import ch.eonum.pipeline.core.DataPipeline;
+import ch.eonum.pipeline.core.DataSet;
+import ch.eonum.pipeline.core.Instance;
+import ch.eonum.pipeline.core.Parameters;
 import ch.eonum.pipeline.filter.PrototypeSelection;
 import ch.eonum.pipeline.filter.PrototypeSelection.ProtoTypeSelectionMode;
 import ch.eonum.pipeline.util.Log;

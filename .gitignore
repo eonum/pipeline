@@ -4,3 +4,4 @@
 .classpath
 .project
 pipeline-jar.jardesc
+/examples/results/*
