@@ -5,12 +5,12 @@ import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.core.Parameters;
 
 /**
- * measures a distance or a similarity between two classes.
+ * Abstract distance metric. Provides a distance metric between two instances.
  * @author tim
  *
  */
 public abstract class Distance<E extends Instance> extends Parameters {
-
+	/** zero instance. used to calculate the length of an instance. */
 	protected E zeroInstance;
 	
 	/**
@@ -21,7 +21,7 @@ public abstract class Distance<E extends Instance> extends Parameters {
 	}
 
 	/**
-	 * get the distance between two instances.
+	 * Get the distance between two instances.
 	 * @param inst1
 	 * @param inst2
 	 * @return
@@ -29,11 +29,12 @@ public abstract class Distance<E extends Instance> extends Parameters {
 	public abstract double distance(E inst1, E inst2);
 	
 	/**
-	 * get the distance between two instances.
-	 * This gives exactly the same result as the standard distance.
-	 * Use this method if you have one instance with many features (e.g. cluster center)
-	 * and one with only few. You have to provide the precomputed length of instance2.
-	 * This is much faster in some cases and for some distances (but not all) than the standard distance.
+	 * Get the distance between two instances. This gives exactly the same
+	 * result as the standard distance. Use this method if you have one instance
+	 * with many features (e.g. cluster center) and one with only few. You have
+	 * to provide the pre computed length of instance2. This is much faster in
+	 * some cases and for some distances (but not all) than the standard
+	 * distance.
 	 * 
 	 * @param inst1
 	 * @param inst2
@@ -45,8 +46,9 @@ public abstract class Distance<E extends Instance> extends Parameters {
 	}
 	
 	/**
-	 * calculate the length of an instance.
-	 * the length is the same as the distance to a 0-instance.
+	 * Calculate the length of an instance. The length is the same as the
+	 * distance to a 0-instance.
+	 * 
 	 * @param instance
 	 * @return length
 	 */

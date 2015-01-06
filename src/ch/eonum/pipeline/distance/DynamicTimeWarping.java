@@ -4,6 +4,17 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Sequence;
 import ch.eonum.pipeline.core.SparseInstance;
 
+/**
+ * Dynamic Time Warping. @see http://en.wikipedia.org/wiki/Dynamic_time_warping.
+ * Measures the similarity/distance between two temporal sequences by aligning
+ * them using dynamic programming. Currently this is a simple dynamic time
+ * warping distance without any optimization. Setting different weights for
+ * different features is done by scaling those features.
+ * 
+ * @author tim
+ * 
+ * @param <E>
+ */
 public class DynamicTimeWarping<E extends Sequence> extends Distance<E> {
 
 	/**
@@ -25,11 +36,6 @@ public class DynamicTimeWarping<E extends Sequence> extends Distance<E> {
 		this.costFunction = costFunction;
 	}
 
-	/**
-	 * Simple dynamic time warping distance without any optimization. See
-	 * http://en.wikipedia.org/wiki/Dynamic_time_warping Setting different
-	 * weights for different features is done by scaling these features.
-	 */
 	@Override
 	public double distance(E s, E t) {
 		int n = s.getSequenceLength() + 1;

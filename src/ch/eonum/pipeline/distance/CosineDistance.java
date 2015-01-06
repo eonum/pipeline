@@ -7,7 +7,7 @@ import java.util.List;
 import ch.eonum.pipeline.core.Instance;
 
 /**
- * Cosine Distance. See 
+ * Cosine Distance. Inverse of cosine similarity: {@link http://en.wikipedia.org/wiki/Cosine_similarity}
  * @author tim
  *
  * @param <E>
@@ -23,7 +23,7 @@ public class CosineDistance<E extends Instance> extends Distance<E> {
 		double sumTop = 0;
         double sumOne = 0;
         double sumTwo = 0;
-        // merge the lists of dimensions
+        /** merge dimensions. */
 		List<String> union = new ArrayList<String>(inst2.features());
 		union.addAll(inst1.features());
 		for(String feature : new HashSet<String>(union)) {
@@ -31,11 +31,11 @@ public class CosineDistance<E extends Instance> extends Distance<E> {
             sumOne += inst1.get(feature) * inst1.get(feature);
             sumTwo += inst2.get(feature) * inst2.get(feature);
         }
-        double cosSim = sumTop / (Math.sqrt(sumOne) * Math.sqrt(sumTwo));
-        if (cosSim < 0)
-            cosSim = 0;//This should not happen, but does because of rounding errorsl
+        double cosSimilarity = sumTop / (Math.sqrt(sumOne) * Math.sqrt(sumTwo));
+        if (cosSimilarity < 0)
+            cosSimilarity = 0; /** This should not happen, but does due to rounding errors. */
         
-        return 1 - cosSim;
+        return 1 - cosSimilarity;
 	}
 	
 	@Override

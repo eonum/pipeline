@@ -8,7 +8,8 @@ import ch.eonum.pipeline.core.SparseInstance;
 
 /**
  * Implementation of a polynomial kernel.
- * A polynomial kernel is not a metric!!
+ * A polynomial kernel is not a metric!! But can be used as a similarity measure.
+ * 
  * @author tim
  *
  */
@@ -27,6 +28,7 @@ public class PolynomialKernel<E extends Instance> extends Distance<E> {
     	this.putParameter("exponent", 1.0);
     }
     
+    @Override
     public double distance(Instance i, Instance j) {
     	double exponent = this.getDoubleParameter("exponent");
         double result;

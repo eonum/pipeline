@@ -15,8 +15,7 @@ import ch.eonum.pipeline.core.SparseInstance;
  * is a free parameter in the Minkowski distance.
  * 
  * d = ((x1 - y1)^k + ... + (xn - yn)^k)^(1/k)
- * 
- * 
+ *  
  * @author tim
  *
  */
@@ -56,7 +55,6 @@ public class MinkowskiDistance<E extends Instance> extends Distance<E> {
 	public double distance(Instance inst1, Instance inst2) {
 		double minkowski = getDoubleParameter("minkowski");
 		double distance = 0.0;
-		// merge the lists of dimensions
 		List<String> union = new ArrayList<String>(inst2.features());
 		union.addAll(inst1.features());
 		for(String feature : new HashSet<String>(union))
