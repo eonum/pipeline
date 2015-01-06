@@ -50,3 +50,14 @@ Below you can find a selection of pipeline modules.
 * k-fold cross validation
 * evaluation metrics (RMSE, AUC, Recognition Rate, LogLoss)
 * Validation of meta parameters of entire data pipelines.
+
+
+## Getting started
+The easiest wy is to import the code into Eclipse as an existing Project after cloning with git. The code is configured as a Maven Java Project.
+The only dependecy which is not resolved automatically by Maven is gnuplot. In order to produce accuracy and validation plots during training and validation the command line tool 'gnuplot' is required.
+Your application will not break without the gnuplot dependency. You will just have some error messages and no plots.
+
+On Ubuntu/Debian gnuplot is installed as follows.
+```bash
+sudo apt-get install gnuplot
+```
