@@ -12,6 +12,12 @@ import ch.eonum.pipeline.core.DenseSequence;
 import ch.eonum.pipeline.core.Features;
 import ch.eonum.pipeline.core.SequenceDataSet;
 
+/**
+ * Read letter sequences (DenseSequences) from files.
+ * 
+ * @author tim
+ *
+ */
 public class LetterReader {
 
 	/**
@@ -20,6 +26,7 @@ public class LetterReader {
 	 * @param predictionAfter begin prediction after X letters
 	 * @param lineByLine make one sequence for each line
 	 * @param addNewLine add line breaks as letters
+	 * @param features all allowed characters
 	 * @return
 	 * @throws IOException
 	 * @throws ParseException

@@ -35,6 +35,13 @@ public class DataSetFilter {
 		this.threshold = threshold;
 	}
 
+	/**
+	 * Return a data set with all instances from the provided data set that
+	 * fulfill the filter condition.
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public DataSet<SparseInstance> filter(DataSet<SparseInstance> data) {
 		DataSet<SparseInstance> filteredSet = new DataSet<SparseInstance>();
 		for (SparseInstance inst : data)
@@ -69,7 +76,7 @@ public class DataSetFilter {
 	}
 
 	/**
-	 * get the upper X percents from a certain feature.
+	 * Get the upper X percents from a certain feature.
 	 * 
 	 * @param data
 	 * @param feature

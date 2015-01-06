@@ -23,12 +23,11 @@ import ch.eonum.pipeline.evaluation.Evaluator;
 import ch.eonum.pipeline.util.Log;
 
 /**
- * Feature selection class.
- * select the best features.
- * create a ranked list of all features.
+ * Feature selection class. Select the best features. create a ranked list of
+ * all features.
  * 
  * @author tim
- *
+ * 
  */
 public class FeatureSelection<E extends Instance> extends Parameters implements DataPipeline<E> {
 	private static final Map<String, String> PARAMETERS = new HashMap<String, String>();
@@ -48,7 +47,8 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	private DataPipeline<E> inputTest;
 	private boolean doRetrain;
 
-	public FeatureSelection(Classifier<E> classifier, Features dims, Evaluator<E> eval, DataSet<E> training, DataSet<E> test) {
+	public FeatureSelection(Classifier<E> classifier, Features dims,
+			Evaluator<E> eval, DataSet<E> training, DataSet<E> test) {
 		this.classifier = classifier;
 		this.features = dims;
 		this.evaluator = eval;
@@ -61,7 +61,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 
 	/**
-	 * create and save a ranked list with each feature
+	 * Create and save a ranked list with each feature.
 	 * @param string
 	 */
 	public void createAndSaveRankedList(String fileName) {
@@ -70,7 +70,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * create and save feature frequency ranking
+	 * Create and save feature frequency ranking.
 	 * @param string
 	 */
 	public void createAndSaveRankedFrequencyList(String fileName) {
@@ -79,7 +79,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * create and save feature correlation ranking
+	 * Create and save feature correlation ranking.
 	 * @param string
 	 */
 	public void createAndSaveRankedCorrelationList(String fileName) {
@@ -88,7 +88,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 
 	/**
-	 * rate the features according their frequency in the training set.
+	 * Rate the features according their frequency in the training set.
 	 */
 	public void createFrequencyList() {
 		this.featureDeltas = new ArrayList<FeatureDelta>();
@@ -106,7 +106,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * rank each feature according their absolute correlation with the groundtruth
+	 * Rank each feature according their absolute correlation with the groundtruth
 	 */
 	public void createCorrelationList() {
 		this.featureDeltas = new ArrayList<FeatureDelta>();
@@ -148,8 +148,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 
 	/**
-	 * load a ranked list from file.
-	 * recreating the list can be avoided.
+	 * Load a ranked list from file. recreating the list can be avoided.
 	 * 
 	 * @param fileName
 	 */
@@ -174,7 +173,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 
 	/**
-	 * save the ranked feature list to a file.
+	 * Save the ranked feature list to a file.
 	 * @param fileName
 	 */
 	public void saveRankedList(String fileName) {
@@ -192,8 +191,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 
 	/**
-	 * create the ranked list.
-	 * calculate for each feature the difference 
+	 * Create the ranked list. Calculate the difference for each feature.
 	 */
 	public void createRankedList() {
 		this.featureDeltas = new ArrayList<FeatureDelta>();
@@ -225,7 +223,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * remove all features which have a negative effect on the result.
+	 * Remove all features which have a negative effect on the result.
 	 * @param trainset
 	 */
 	public void removeNegative(DataSet<? extends Instance> data) {
@@ -241,7 +239,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * remove all features except the n-best.
+	 * Remove all features except the n-best.
 	 * @param trainset
 	 */
 	public void removeNBest(DataSet<? extends Instance> data, int n) {
@@ -259,7 +257,7 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * remove features according the mode parameter
+	 * Remove features according the mode parameter
 	 * @param set
 	 * @return
 	 */
@@ -274,13 +272,12 @@ public class FeatureSelection<E extends Instance> extends Parameters implements 
 	}
 	
 	/**
-	 * do not retrain when creating the list.
+	 * Do not retrain when creating the list.
 	 * this is not the best way to obtain the list. But it is much faster.
 	 */
 	public void setNoRetrain() {
 		this.doRetrain = false;
 	}
-
 
 	private double test(DataSet<E> train, DataSet<E> test, boolean doTraining) {
 		if(doTraining){

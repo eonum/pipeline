@@ -28,9 +28,7 @@ import ch.eonum.pipeline.util.Log;
 public class FeatureImportance<E extends Instance> extends Parameters {
 	private static final Map<String, String> PARAMETERS = new HashMap<String, String>();
 	
-	static {
-		
-	}
+	static {}
 
 	private Classifier<E> classifier;
 	private Features features;
@@ -38,16 +36,26 @@ public class FeatureImportance<E extends Instance> extends Parameters {
 	private List<FeatureDelta> featureDeltas;
 	private DataSet<E> testData;
 	
-
-	public FeatureImportance(Classifier<E> classifier, DataSet<E> test, Evaluator<E> eval, Features dims) {
+	/**
+	 * Constructor
+	 * @param classifier underlying classifier
+	 * @param test test set
+	 * @param eval evaluator
+	 * @param features feature set
+	 */
+	public FeatureImportance(Classifier<E> classifier, DataSet<E> test, Evaluator<E> eval, Features features) {
 		this.classifier = classifier;
-		this.features = dims;
+		this.features = features;
 		this.evaluator = eval;
 		this.testData = test;
 		this.setSupportedParameters(FeatureImportance.PARAMETERS);	
 	}
 
-
+	/**
+	 * Feature importance ranking. A file called "positiveFeatures.txt" with the
+	 * analysis results is written to the base directory of the provided
+	 * classifier.
+	 */
 	public void createRanking() {
 		Random rand = new Random(123);
 		featureDeltas = new ArrayList<FeatureDelta>();
@@ -67,7 +75,12 @@ public class FeatureImportance<E extends Instance> extends Parameters {
 		validateNumberOfFeatures();
 	}
 
-
+	/**
+	 * Additional analysis. Incrementally use only the best features for
+	 * classification. All other features are randomly permutated. A file called
+	 * "validationOnTheNumberOfFeatures.png" is written to the classifier's base
+	 * directory.
+	 */
 	private void validateNumberOfFeatures() {
 		Random rand = new Random(123);
 		Map<Integer, Double> curve = new LinkedHashMap<Integer, Double>();
@@ -91,7 +104,6 @@ public class FeatureImportance<E extends Instance> extends Parameters {
 		}
 	}
 
-
 	private void printRanking() {
 		int rank = 0;
 		Features positive = new Features();
@@ -103,7 +115,6 @@ public class FeatureImportance<E extends Instance> extends Parameters {
 		positive.recalculateIndex();
 		positive.writeToFile(classifier.getBaseDir() + "positiveFeatures.txt");
 	}
-
 
 	private double evaluate(DataSet<E> data) {
 		classifier.setTestSet(data);

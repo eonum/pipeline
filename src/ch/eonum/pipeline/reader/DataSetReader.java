@@ -20,11 +20,11 @@ import ch.eonum.pipeline.util.Log;
  * @param <E>
  */
 public abstract class DataSetReader<E extends Instance> extends Parameters implements DataPipeline<E> {
-	/** File which is read. */
+	/** File to be read. */
 	protected File file;
 	/** Do ratio adjusting. {@link #enableRatioAdjusting} */
 	private boolean adjustRatio;
-	/** prototype selector. */
+	/** prototype selector for ratio adjustement. */
 	private PrototypeSelection<E> prototypeSelector;
 		
 	public DataSetReader(String fileName){
