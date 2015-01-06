@@ -3,9 +3,8 @@ package ch.eonum.pipeline.util.json;
 import java.util.Map;
 
 /**
- * JSON - Serialization.
- * interface for all objects which can be written to and read from json
- * files/streams
+ * JSON - Serialization. Interface for all objects which can be written to and
+ * read from json files/streams
  * 
  * @author tim
  * 

@@ -6,10 +6,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+/**
+ * Access the system shell and redirect standard and error outputs.
+ * 
+ * @author tim
+ * 
+ */
 public class Shell {
 	/**
-	 * execute an external command.
-	 * print out standard error and standard out and wait for the process to exit.
+	 * Execute an external command. Print out standard error and standard out
+	 * and wait for the process to exit.
+	 * 
 	 * @param programName
 	 * @param command
 	 */
@@ -18,13 +25,14 @@ public class Shell {
 	}
 
 	/**
-	 * execute an external command.
-	 * print out standard error and standard out and wait for the process to exit.
-	 * write the standard output into a file specified by stdoutFile.
+	 * Execute an external command. Print out standard error and standard out
+	 * and wait for the process to exit. write the standard output into a file
+	 * specified by stdoutFile.
 	 * 
 	 * @param programName
 	 * @param command
-	 * @param stdoutFile for standard out
+	 * @param stdoutFile
+	 *            for standard out
 	 */
 	public static void executeCommand(String programName, String command,
 			String stdoutFile) {

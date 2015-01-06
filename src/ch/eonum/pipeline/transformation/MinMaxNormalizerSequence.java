@@ -10,13 +10,15 @@ import ch.eonum.pipeline.core.Sequence;
 import ch.eonum.pipeline.core.SparseInstance;
 
 /**
- * normalize a data set to fit into the interval [0,1].
+ * Normalize a sequence data set to fit into the interval [0,1]. Only input
+ * sequences are normalized.
  * 
- * Note: Dimensions/Features not present in the training set will not be normalized at all.
+ * Note: Dimensions/Features not present in the training set will not be
+ * normalized at all.
  * 
  * 
  * @author tim
- *
+ * 
  */
 public class MinMaxNormalizerSequence<E extends Sequence> extends Transformer<E> {
 	private SparseInstance max;

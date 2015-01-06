@@ -215,7 +215,7 @@ public class PCA extends Transformer<SparseInstance> {
 
 	/**
 	 * Gives covariance between vectors in an n-dimensional space. The two input
-	 * arrays store values with the mean already subtracted. Read the code.
+	 * arrays store values with the mean already subtracted.
 	 */
 	private static double getCovariance(double[][] matrix, int colA, int colB,
 			double[] mean) {

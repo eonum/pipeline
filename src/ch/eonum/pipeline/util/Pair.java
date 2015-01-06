@@ -1,7 +1,7 @@
 package ch.eonum.pipeline.util;
 
 /**
- * Generic pair/tuple class.
+ * Generic pair/tuple class. Implemented as an immutable object.
  * 
  * @author tim
  *

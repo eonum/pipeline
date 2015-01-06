@@ -5,7 +5,7 @@ import java.io.File;
 public class FileUtil {
 
 	/**
-	 * create a folder if it does not already exist.
+	 * Create a folder if it does not already exist.
 	 * @param string
 	 */
 	public static void mkdir(String folderName) {

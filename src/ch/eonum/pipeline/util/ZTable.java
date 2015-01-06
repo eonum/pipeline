@@ -1,5 +1,10 @@
 package ch.eonum.pipeline.util;
 
+/**
+ * ZTable for z transformations. @see http://en.wikipedia.org/wiki/Standard_normal_table
+ * @author tim
+ *
+ */
 public class ZTable {
 	private static double[] zTable = { 0.5000, 0.5040, 0.5080, 0.5120, 0.5160,
 			0.5199, 0.5239, 0.5279, 0.5319, 0.5359, 0.5398, 0.5438, 0.5478,
@@ -42,12 +47,20 @@ public class ZTable {
 			0.9987, 0.9987, 0.9988, 0.9988, 0.9989, 0.9989, 0.9989, 0.9990,
 			0.9990 };
 
+	/**
+	 * Get the probability of being larger than another value / percentile of a
+	 * normally distributed value. Cutoffs are at -+ 3.09
+	 * 
+	 * @param z normally distributed value.
+	 * @return
+	 */
 	public static double getProbabilityFromZ(double z) {
 		if (z <= -3.09)
 			return 0.0;
 		if (z >= 3.09)
 			return 1.0;
 		
-		return z > 0.0 ? zTable[(int) Math.round(z * 100.0)] : (1.0 - zTable[(int) Math.round(-z * 100.0)]);
+		return z > 0.0 ? zTable[(int) Math.round(z * 100.0)]
+				: (1.0 - zTable[(int) Math.round(-z * 100.0)]);
 	}
 }

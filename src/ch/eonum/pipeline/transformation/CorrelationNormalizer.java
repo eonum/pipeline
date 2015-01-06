@@ -17,8 +17,9 @@ public class CorrelationNormalizer<E extends Instance> extends Transformer<E> {
 	private SparseInstance correlation;
 
 	/**
-	 * create a normalizer from a given dataset.
-	 * correlations are calculated out of the dataset.
+	 * create a normalizer from a given dataset. correlations are calculated out
+	 * of the dataset.
+	 * 
 	 * @param dataset
 	 */
 	public CorrelationNormalizer(DataSet<E> dataset) {

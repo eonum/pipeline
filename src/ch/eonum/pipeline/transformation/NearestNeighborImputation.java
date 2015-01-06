@@ -46,7 +46,6 @@ public class NearestNeighborImputation<E extends Instance> extends Transformer<E
 		}
 	}
 	
-
 	private Instance getNeighbor(Instance inst) {
 		Instance nearestNeighbor = null;
 		double minDistance = Double.POSITIVE_INFINITY;
@@ -62,9 +61,9 @@ public class NearestNeighborImputation<E extends Instance> extends Transformer<E
 	}
 
 	/**
-	 * Euclidian distance handling NaN values
-	 * NaN values in the second instance are being ignored.
-	 * NaN values in the first instance lead to a infinite distance.
+	 * Euclidian distance handling NaN values. NaN values in the second instance
+	 * are ignored. NaN values in the first instance lead to an infinite
+	 * distance.
 	 * 
 	 * @param each
 	 * @param inst

@@ -10,10 +10,11 @@ import ch.eonum.pipeline.core.Instance;
 
 
 /**
- * merges two datasets according their features.
- * if some features are in more than one dataset, the last set is used.
+ * Merges two data sets according their features. if some features are in more
+ * than one data set, the last set is used.
+ * 
  * @author tim
- *
+ * 
  */
 public class Merger<E extends Instance> extends Transformer<E> {
 	private List<DataSet<E>> dataSets;

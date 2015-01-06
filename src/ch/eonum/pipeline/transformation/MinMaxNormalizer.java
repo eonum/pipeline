@@ -15,13 +15,15 @@ import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.core.SparseInstance;
 
 /**
- * normalize a data set to fit into the interval [0,1].
+ * Normalize a data set to fit all inputs into the interval [0,1]. Only inputs
+ * are normalized.
  * 
- * Note: Dimensions/Features not present in the training set will not be normalized at all.
+ * Note: Dimensions/Features not present in the training set will not be
+ * normalized at all.
  * 
  * 
  * @author tim
- *
+ * 
  */
 public class MinMaxNormalizer<E extends Instance> extends Transformer<E> {
 	private SparseInstance max;
@@ -30,7 +32,7 @@ public class MinMaxNormalizer<E extends Instance> extends Transformer<E> {
 	private boolean verbose = false;
 
 	/**
-	 * create a normalizer from a given dataset.
+	 * Create a normalizer from a given dataset.
 	 * max and min are calculated out of the dataset.
 	 * @param dataset
 	 */
@@ -56,7 +58,7 @@ public class MinMaxNormalizer<E extends Instance> extends Transformer<E> {
 	}
 	
 	/**
-	 * create a normalizer by loading max and min from file.
+	 * Create a normalizer by loading max and min from file.
 	 * format: one line for each feature: 'feature minValue maxValue'
 	 * @param fileName
 	 */
@@ -98,6 +100,10 @@ public class MinMaxNormalizer<E extends Instance> extends Transformer<E> {
 		}
 	}
 
+	/**
+	 * Write maxima and minima to a file.
+	 * @param fileName
+	 */
 	public void writeToFile(String fileName) {
 		try {
 			PrintStream p = new PrintStream(new FileOutputStream(fileName));
@@ -109,6 +115,9 @@ public class MinMaxNormalizer<E extends Instance> extends Transformer<E> {
 		}
 	}
 	
+	/**
+	 * Verbose calculation of maxima and minima.
+	 */
 	public void setVerbose(){
 		this.verbose = true;
 	}

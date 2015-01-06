@@ -12,14 +12,14 @@ import org.codehaus.jackson.type.TypeReference;
 
 
 /**
- * JSON - Serialization.
- * Wrapper class for all Jackson JSON functionalities.
+ * JSON - Serialization. Wrapper class for all Jackson JSON functionalities.
+ * 
  * @author tim peter
- *
+ * 
  */
 public class JSON {
 	/**
-	 * write a JSONable object to a File.
+	 * Write a JSONable object to a File.
 	 * JSON is pretty printed.
 	 * 
 	 * @param file
@@ -34,7 +34,7 @@ public class JSON {
 	}
 	
 	/**
-	 * write a JSONable object to a File.
+	 * Write a map to a File as JSON.
 	 * JSON is pretty printed.
 	 * 
 	 * @param file

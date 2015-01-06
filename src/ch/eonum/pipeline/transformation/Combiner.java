@@ -10,12 +10,12 @@ import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.core.SparseInstance;
 
 /**
- * combines the output of several classifiers.
- * All 'result' features are being extracted from the input data sets and combined in a new dataset.
- * You can use this for classifier combination.
+ * Combines the output of several classifiers. All 'result' features are
+ * extracted from the input data sets and combined in a new data set as input
+ * data. You can use this for classifier combination.
  * 
  * @author tim
- *
+ * 
  */
 public class Combiner extends Transformer<SparseInstance> {
 	private List<DataSet<SparseInstance>> dataSets;
@@ -46,7 +46,7 @@ public class Combiner extends Transformer<SparseInstance> {
 			i++;
 			for (Instance inst : each){
 				if(newData.containsKey(inst.id))
-					newData.get(inst.id).putResult("result" + i, inst.getResult("result"));
+					newData.get(inst.id).put("result" + i, inst.getResult("result"));
 				else {
 					HashMap<String, Double> data = new HashMap<String, Double>();
 					data.put("result" + i, inst.getResult("result"));

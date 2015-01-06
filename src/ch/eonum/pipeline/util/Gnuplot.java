@@ -10,6 +10,11 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Wrapper class for the gnuplot command line tool.
+ * @author tim
+ *
+ */
 public class Gnuplot {
 
 	private static final String AreaUnderCurveTemplate = "set title '@title'\n" + 

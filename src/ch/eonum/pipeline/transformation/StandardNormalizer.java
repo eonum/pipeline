@@ -14,17 +14,20 @@ import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.core.SparseInstance;
 
 /**
- * normalize a data set to have a mean = 0.0 and a standard deviation = 1.0 for each dimension.
+ * Normalize a data set to have a mean = 0.0 and a standard deviation = 1.0 for
+ * each feature.
+ * 
  * @author tim
- *
+ * 
  */
 public class StandardNormalizer<E extends Instance> extends Transformer<E> {
 	private SparseInstance mean;
 	private SparseInstance standardDeviation;
 
 	/**
-	 * create a normalizer from a given dataset.
-	 * mean and standard deviation are calculated out of the dataset.
+	 * Create a normalizer from a given data set. Mean and standard deviation
+	 * are calculated out of the data set.
+	 * 
 	 * @param dataset
 	 */
 	public StandardNormalizer(DataSet<E> dataset) {
@@ -47,7 +50,7 @@ public class StandardNormalizer<E extends Instance> extends Transformer<E> {
 	}
 	
 	/**
-	 * create a normalizer by loading mean and standard deviation from file.
+	 * Create a normalizer by loading mean and standard deviation from file.
 	 * format: one line for each feature: 'feature meanvalue sdValue'
 	 * @param fileName
 	 */

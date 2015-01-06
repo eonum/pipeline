@@ -32,24 +32,25 @@ public class Transformer<E extends Instance> extends Parameters implements DataP
 	}
 
 	/**
-	 * set the input. Depending on the concrete class of
-	 * the feature extractor, the input dataset is changed
-	 * and the same set is given back or a new one is created. */
+	 * Set the input. Depending on the concrete class of the feature extractor,
+	 * the input dataset is changed and the same set is given back or a new one
+	 * is created.
+	 */
 	public void setInputDataSet(DataSet<E> dataSet){
 		this.dataSet = dataSet;
 	}
 	
 	/**
-	 * get the output.
+	 * Get the output.
 	 */
 	public DataSet<E> getOutputDataSet(){
 		return dataSet;
 	}
 	
 	/**
-	 * get an ordered list of all features.
-	 * First there are all non-numeric named features, sorted alphabetically.
-	 * Then there are all numerical-named features, sorted numerically.
+	 * Get an ordered list of all features. First there are all non-numeric
+	 * named features, sorted alphabetically. Then there are all numerical-named
+	 * features, sorted numerically.
 	 */
 	public List<String> getOrderedListOfFeatures() {
 		List<String> list = Arrays.asList(this.features.toArray(new String[0]));
@@ -77,7 +78,7 @@ public class Transformer<E extends Instance> extends Parameters implements DataP
 	}
 	
 	/**
-	 * transformation / extraction of the features.
+	 * Transformation / extraction of the features.
 	 */
 	public void extract(){
 		for (Instance inst : this.dataSet)
@@ -86,7 +87,7 @@ public class Transformer<E extends Instance> extends Parameters implements DataP
 	}
 	
 	/**
-	 * preparation of the extractor. for those extractor which need training.
+	 * Preparation of the extractor. for those extractor which need training.
 	 */
 	public void prepare(DataSet<E> dataset){}
 	
