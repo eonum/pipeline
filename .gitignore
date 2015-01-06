@@ -1,7 +1,6 @@
 /bin/
+/target/
 /lib/
 /.metadata/
-.classpath
-.project
 pipeline-jar.jardesc
 /examples/results/*
