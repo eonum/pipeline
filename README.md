@@ -14,7 +14,7 @@ Below you can find a selection of pipeline modules.
 * Sequences / Time series, sparse and dense implentations
 * Graphs
 
-##### Classifier / Regressors
+##### Classifiers / Regressors
 * Random Forests / Decision Trees / CART
 * Neural Nets
 * Recurrent Neural Nets (Long Short Term Memory)
@@ -36,13 +36,13 @@ Below you can find a selection of pipeline modules.
 * Genetic Algorithms
 * Gradient descent
 
-##### Clustering / Data Mining
+##### Clustering
 * Self organizing maps / Kohonen map
 * Gaussian Mixture Models
 * K-Means Clustering
 * EM Fuzzy Clustering
 
-##### Transformators
+##### Transformer
 * Principal Component Analysis
 * Feature extraction and selection
 
@@ -50,3 +50,14 @@ Below you can find a selection of pipeline modules.
 * k-fold cross validation
 * evaluation metrics (RMSE, AUC, Recognition Rate, LogLoss)
 * Validation of meta parameters of entire data pipelines.
+
+
+## Getting started
+The easiest way is to import the code into Eclipse as an existing Project after having invoked `git clone git@github.com:eonum/pipeline.git`. The code is configured as a Maven Java Project and can also be used without Eclipse.
+The only dependecy which is not resolved automatically by Maven is gnuplot. In order to produce accuracy and validation plots during training and validation the command line tool 'gnuplot' is required.
+Your application will not break without the gnuplot dependency. You will just have some error messages and no plots.
+
+On Ubuntu/Debian gnuplot is installed as follows.
+```bash
+sudo apt-get install gnuplot
+```
