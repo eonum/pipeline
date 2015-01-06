@@ -32,6 +32,30 @@ public abstract class Sequence extends SparseInstance {
 			String className) {
 		super(id, groundTruth, vector, className);
 	}
+	
+	/**
+	 * Set the value of feature f at time point t. The sequence length must be
+	 * at least t+1. The existing value will be overwritten.
+	 * 
+	 * @param t
+	 * @param feature
+	 * @param value
+	 */
+	public abstract void put(int t, String feature, double value);
+	
+	/**
+	 * Get the input value for feature f at time point t.
+	 * @param t
+	 * @param f
+	 * @return
+	 */
+	public abstract double get(int t, String feature);
+
+	/** get the input sequence length. */
+	public abstract int getSequenceLength();
+
+	/** append a time point to the end of the input sequence. */
+	public abstract void addTimePoint(Map<String, Double> point);
 
 	/**
 	 * Get the length of the ground truth sequence. Returns -1 if there is no
@@ -46,6 +70,31 @@ public abstract class Sequence extends SparseInstance {
 	 * @return
 	 */
 	public abstract boolean hasGroundTruthSequence();
+	
+	/**
+	 * Set the value of ground truth feature f at time point t. The ground truth
+	 * sequence length must be at least t+1. The existing value will be
+	 * overwritten.
+	 * 
+	 * @param t
+	 * @param f
+	 * @param value
+	 */
+	public abstract void addGroundTruth(int t, int f, double result);
+
+	/**
+	 * Initialize an empty ground truth sequence (all values are NaN) with the
+	 * same dimensions as the input sequence.
+	 */
+	public abstract void initGroundTruthSequence();
+
+	/**
+	 * Get the ground truth value for feature f at time point t.
+	 * @param t
+	 * @param f
+	 * @return
+	 */
+	public abstract double groundTruthAt(int t, int f);
 
 	/**
 	 * Get the number of dimensions in the output/ground truth sequence. Returns
@@ -54,16 +103,6 @@ public abstract class Sequence extends SparseInstance {
 	 * @return
 	 */
 	public abstract int outputSize();
-
-	/**
-	 * Create a ground truth sequence for standard prediction tasks where the
-	 * outcome should be identical to the future input. E.g. Weather forecast
-	 * based on current weather.
-	 * 
-	 * @param timeLag number of time points we want to look into the future.
-	 * @param features features that should be predicted. (>= 1)
-	 */
-	public abstract void createTargetForPrediction(int timeLag, Features features);
 
 	/**
 	 * Return true if there is a ground truth sequence and the ground truth
@@ -81,7 +120,7 @@ public abstract class Sequence extends SparseInstance {
 	public abstract double[][] getDenseRepresentation(Features features);
 
 	/**
-	 * Get the value for feature f at time point t.
+	 * Get the result value for feature f at time point t.
 	 * @param t
 	 * @param f
 	 * @return
@@ -105,61 +144,130 @@ public abstract class Sequence extends SparseInstance {
 	 */
 	public abstract void initSequenceResults();
 
-	/**
-	 * Deep copy.
-	 */
+	/** Deep copy. */
 	public abstract Sequence copy();
-
+	
+	/** delete all input sequence data. */
 	public abstract void clearSequence();
 
+	/**
+	 * group / add all time points with the same value of feature groupFeature.
+	 * After grouping, the sequence is sorted in ascending order according
+	 * groupFeature.
+	 * 
+	 * @param groupFeature
+	 */
 	public abstract void groupBy(String groupFeature);
 
+	/** Mix all time points. Mix the temporal order. */
 	public abstract void shuffle();
 
+	/**
+	 * Put all information in the instance (information about the sequence as a
+	 * whole) at the bottom/start of the time series.
+	 */
 	public abstract void putMasterAtBottom();
 
+	/**
+	 * Put all information in the instance (information about the sequence as a
+	 * whole) on top/at the end of the time series.
+	 */
 	public abstract void pushMasterOnTop();
-
-	public abstract void invertTemporalOrder();
-
-	public abstract DataSet<SparseInstance> getDataSetFromTimePoints();
-
-	public abstract DataSet<SparseInstance> createDataSetFromTimePoints();
-
+	
+	/**
+	 * Add all information in the instance (information about the sequence as a
+	 * whole) to every point in the time series.
+	 */
 	public abstract void pushUp();
 
+	/**
+	 * Invert the temporal order of the input sequence. The ground truth
+	 * sequence is not changed!
+	 */
+	public abstract void invertTemporalOrder();
+
+	/**
+	 * Get a data set where each time point is a single instance. The instances
+	 * hold the same feature maps as the time points.
+	 * 
+	 * You can use this to apply basic feature transformers. (Normalization, PCA
+	 * ..)
+	 * 
+	 * @return
+	 */
+	public abstract DataSet<SparseInstance> getDataSetFromTimePoints();
+
+	/**
+	 * Get a data set where each time point is a single instance. All data is
+	 * copied and no references to this sequence is kept.
+	 * 
+	 * @return
+	 */
+	public abstract DataSet<SparseInstance> createDataSetFromTimePoints();
+
+	/** delete the input sequence. */
 	public abstract void deleteSequence();
 
+	/**
+	 * Put all information in the input sequence into the instance by adding a
+	 * prefix t to each feature. The prefix is equals to each time point.
+	 */
 	public abstract void levelTimeWindow();
 
+	/**
+	 * Get the normed (by sequence length) center of mass of all features in the
+	 * given features object.
+	 * 
+	 * @param features
+	 */
 	public abstract void levelCenterOfMass(Features features);
 
+	/**
+	 * Get the standard deviation of each feature in the sequence and store it
+	 * in the instance (master data).
+	 */
 	public abstract void levelStd();
 
+	/**
+	 * Get the minimum of each feature in the sequence and store it in the
+	 * instance (master data).
+	 */
 	public abstract void levelMin();
 
+	/**
+	 * Get the maximum of each feature in the sequence and store it in the
+	 * instance (master data).
+	 */
 	public abstract void levelMax();
 
+	/**
+	 * Get the average of each feature in the sequence and store it in the
+	 * instance (master data).
+	 */
 	public abstract void levelAverage();
 
+	@Override
 	public abstract Set<String> features();
 
+	/**
+	 * Duplicate the input sequence. Append a copy to the end.
+	 */
 	public abstract void doubleSequence();
-
+	
+	/**
+	 * Sort the time points according the specified feature in ascending order.
+	 * @param feature
+	 */
 	public abstract void sortTimePoints(final String feature);
-
-	public abstract void addGroundTruth(int t, int f, double result);
-
-	public abstract void initGroundTruthSequence();
-
-	public abstract double groundTruthAt(int t, int f);
-
-	public abstract double get(int t, String feature);
-
-	public abstract void put(int t, String feature, double value);
-
-	public abstract int getSequenceLength();
-
-	public abstract void addTimePoint(Map<String, Double> point);
+	
+	/**
+	 * Create a ground truth sequence for standard prediction tasks where the
+	 * outcome should be identical to the future input. E.g. Weather forecast
+	 * based on current weather.
+	 * 
+	 * @param timeLag number of time points we want to look into the future.
+	 * @param features features that should be predicted. (>= 1)
+	 */
+	public abstract void createTargetForPrediction(int timeLag, Features features);
 
 }

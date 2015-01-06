@@ -188,7 +188,7 @@ public class DenseSequence extends Sequence {
 	}
 
 	/**
-	 * Sort the time points according the specified feature.
+	 * Sort the time points according the specified feature in ascending order.
 	 * @param feature
 	 */
 	@Override
