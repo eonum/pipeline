@@ -53,7 +53,7 @@ Below you can find a selection of pipeline modules.
 
 
 ## Getting started
-### Installation
+##### Installation
 The easiest way is to import the code into Eclipse as an existing Project after having invoked `git clone git@github.com:eonum/pipeline.git`. The code is configured as a Maven Java Project and can also be used without Eclipse.
 The only dependecy which is not resolved automatically by Maven is gnuplot. In order to produce accuracy and validation plots during training and validation the command line tool 'gnuplot' is required.
 Your application will not break without the gnuplot dependency. You will just have some error messages and no plots.
@@ -62,5 +62,5 @@ On Ubuntu/Debian gnuplot is installed as follows.
 ```bash
 sudo apt-get install gnuplot
 ```
-### Examples
+##### Examples
 A good starting point is to execute and experiment with the provided toy experiments in the 'examples' folder.
