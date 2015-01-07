@@ -24,10 +24,8 @@ public class PCA extends Transformer<SparseInstance> {
 	protected static final Map<String, String> PARAMETERS = new HashMap<String, String>();
 
 	static {
-		PARAMETERS
-				.put("k",
-						"dimensionality/number of principal components"
-								+ " on which the data is to be reduced. -1 being the original dimensionality (default: -1)");
+		PARAMETERS.put("k", "dimensionality/number of principal components"
+					+ " on which the data is to be reduced. -1 being the original dimensionality (default: -1)");
 	}
 
 	private Matrix covMatrix;

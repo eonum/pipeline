@@ -3,4 +3,4 @@
 /lib/
 /.metadata/
 pipeline-jar.jardesc
-/examples/results/*
+/results/*
