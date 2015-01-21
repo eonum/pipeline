@@ -65,7 +65,7 @@ public class AreaUnderCurve<E extends Instance> implements Evaluator<E> {
 			int false_positive = 0;
 			int false_negative = 0;
 			for (Instance inst : dataset) {
-				double result = inst.label.equals("0") ? inst
+				double result = (inst.label == null || inst.label.equals("0")) ? inst
 						.getResult("result") : -inst.getResult("result");
 				if (result > threshold
 						&& "0".equals(inst.groundTruth))
@@ -101,7 +101,7 @@ public class AreaUnderCurve<E extends Instance> implements Evaluator<E> {
 	 */
 	protected void calculateMinMax() {
 		for (Instance inst : dataset) {
-			double value = "0".equals(inst.label) ? inst.getResult("result")
+			double value = (inst.label == null || "0".equals(inst.label)) ? inst.getResult("result")
 					: -inst.getResult("result");
 			if (value > max)
 				max = value;

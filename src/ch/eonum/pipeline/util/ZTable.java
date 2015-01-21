@@ -77,6 +77,6 @@ public class ZTable {
 		if (z >= 3.09)
 			return 0.0;
 		
-		return 1 - 2.0 * zTable[(int) Math.round(z * 100.0)];
+		return 1 - 2.0 * (zTable[(int) Math.round(z * 100.0)] - 0.5);
 	}
 }

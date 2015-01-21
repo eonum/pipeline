@@ -574,4 +574,8 @@ public class DenseSequence extends Sequence {
 				groundTruthSequence[i][j] = Double.NaN;
 	}
 
+	public void setFeatures(Features features) {
+		this.features = features;
+	}
+
 }
