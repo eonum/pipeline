@@ -63,4 +63,20 @@ public class ZTable {
 		return z > 0.0 ? zTable[(int) Math.round(z * 100.0)]
 				: (1.0 - zTable[(int) Math.round(-z * 100.0)]);
 	}
+
+	/**
+	 * A value of 0.0 transforms to 1.0. The larger the absolute value of z, the
+	 * smaller the return value.
+	 * 
+	 * @param z
+	 * @return
+	 */
+	public static double getDeviationFromCenter(double z) {
+		if(z < 0)
+			z = -z;
+		if (z >= 3.09)
+			return 0.0;
+		
+		return 1 - 2.0 * zTable[(int) Math.round(z * 100.0)];
+	}
 }

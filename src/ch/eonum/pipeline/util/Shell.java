@@ -37,7 +37,6 @@ public class Shell {
 	public static void executeCommand(String programName, String command,
 			String stdoutFile) {
 		try {
-            
 		    Process p = Runtime.getRuntime().exec(command);
 			InputStream stderr = p.getErrorStream();
 			InputStream stdout = p.getInputStream();
