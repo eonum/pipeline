@@ -316,6 +316,7 @@ public class GaussianMixtureModel<E extends Sequence> extends Classifier<E> {
 						Math.exp(seq.getResult("result" + className)
 								- totalLikelihood));
 			}
+			seq.putResult("result", seq.getResult("result" + maxClass));
 		}
 		return this.testDataSet;
 	}

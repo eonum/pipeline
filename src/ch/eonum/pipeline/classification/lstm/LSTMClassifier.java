@@ -79,7 +79,7 @@ public class LSTMClassifier<E extends Sequence> extends LSTM<E> {
 					each.label = classes.getFeatureByIndex(i);
 					maxProb = each.getResult("classProb" + i);
 				}
-				each.putResult("classProb" + i, 0.);
+				each.putResult("classProb" + i, each.getResult("classProb" + i) / numNetsTotal);
 			}
 			each.putResult("result", maxProb / numNetsTotal);
 		}

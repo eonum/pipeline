@@ -72,11 +72,11 @@ public class ZTable {
 	 * @return
 	 */
 	public static double getDeviationFromCenter(double z) {
-		if(z < 0)
+		if (z < 0)
 			z = -z;
 		if (z >= 3.09)
 			return 0.0;
-		
+
 		return 1 - 2.0 * (zTable[(int) Math.round(z * 100.0)] - 0.5);
 	}
 }
