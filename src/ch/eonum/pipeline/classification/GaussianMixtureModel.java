@@ -300,6 +300,7 @@ public class GaussianMixtureModel<E extends Sequence> extends Classifier<E> {
 				for (int gauss = 0; gauss < logWeights.length; gauss++) {
 					seq.putResult("gauss" + className + gauss, logGaussians[gauss]);
 				}
+				/** normalize to sequence length. */
 				logLikelihood = logLikelihood / seq.getSequenceLength();
 				logLikelihood += this.aPrioriClassLogLikelihoods.get(className);
 				seq.putResult("result" + className, logLikelihood);
@@ -310,11 +311,23 @@ public class GaussianMixtureModel<E extends Sequence> extends Classifier<E> {
 				}
 			}
 			seq.label = maxClass;
-			/** normalize to sequence length and exponentiate to non-log-likelihoods. */
-			for (String className : this.classIndexMapping.keySet()) {
-				seq.putResult("result" + className,
-						Math.exp(seq.getResult("result" + className)
-								- totalLikelihood));
+			
+			/** exponentiate to non-log-likelihoods. */
+			if(this.classIndexMapping.size() == 1){
+				/**
+				 * Do not normalize according the likelihood of this sample if
+				 * we have a one class problem. In this case we want the measure
+				 * exactly this.
+				 */ 
+				seq.putResult("result" + maxClass,
+						Math.exp(seq.getResult("result" + maxClass)));
+			} else {
+				/** Normalize to total likelihood. */
+				for (String className : this.classIndexMapping.keySet()) {
+					seq.putResult("result" + className,
+							Math.exp(seq.getResult("result" + className)
+									- totalLikelihood));
+				}
 			}
 			seq.putResult("result", seq.getResult("result" + maxClass));
 		}
