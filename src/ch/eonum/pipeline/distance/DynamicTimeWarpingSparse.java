@@ -1,8 +1,8 @@
 package ch.eonum.pipeline.distance;
 
 import ch.eonum.pipeline.core.DataSet;
-import ch.eonum.pipeline.core.Sequence;
 import ch.eonum.pipeline.core.SparseInstance;
+import ch.eonum.pipeline.core.SparseSequence;
 
 /**
  * Dynamic Time Warping. @see http://en.wikipedia.org/wiki/Dynamic_time_warping.
@@ -15,7 +15,7 @@ import ch.eonum.pipeline.core.SparseInstance;
  * 
  * @param <E>
  */
-public class DynamicTimeWarping<E extends Sequence> extends Distance<E> {
+public class DynamicTimeWarpingSparse<E extends SparseSequence> extends Distance<E> {
 
 	/**
 	 * Cost function to measure the transformation cost from one point in a
@@ -31,7 +31,7 @@ public class DynamicTimeWarping<E extends Sequence> extends Distance<E> {
 	 *            Cost function to measure the transformation cost from one
 	 *            point in a sequence to another point in a sequence.
 	 */
-	public DynamicTimeWarping(E zi, Distance<SparseInstance> costFunction) {
+	public DynamicTimeWarpingSparse(E zi, Distance<SparseInstance> costFunction) {
 		super(zi);
 		this.costFunction = costFunction;
 	}
