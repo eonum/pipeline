@@ -539,8 +539,9 @@ public class DenseSequence extends Sequence {
 
 	@Override
 	public double[][] getDenseRepresentation(Features features) {
-		if(features.size() != this.features.size())
+		if(features.size() != this.features.size()){
 			throw new IllegalArgumentException("Error: feature size does not match");
+		}
 		return sequence;
 	}
 

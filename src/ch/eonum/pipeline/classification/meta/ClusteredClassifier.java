@@ -15,7 +15,8 @@ import ch.eonum.pipeline.util.Log;
 /**
  * Clustered classifier. Creates a classifier of the wrapped type for each
  * distinct className in the training set. instances in the test set will be
- * classified with the classifier according their class name.
+ * classified with the classifier according their class name. The wrapped
+ * classifier must be serializable/deserializable
  * 
  * @author tim
  * 
@@ -72,7 +73,7 @@ public class ClusteredClassifier<E extends Instance> extends Classifier<E> {
 			this.testDataSet = clusteredTestData.get(cluster);
 			double ratio = clusteredTrainingData.get(cluster).getRatio();
 			this.ratios.put(cluster, ratio);
-			classifier.putParameter("w", ratio);
+			//classifier.putParameter("w", ratio);
 			FileUtil.mkdir(oldBaseDir + cluster + "/");
 			classifier.setBaseDir(oldBaseDir + cluster + "/");
 			this.updateDataSets();
