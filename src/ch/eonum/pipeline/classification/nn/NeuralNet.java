@@ -1,9 +1,7 @@
 package ch.eonum.pipeline.classification.nn;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -249,10 +247,6 @@ public class NeuralNet<E extends Instance> extends Classifier<E> {
 		int i = 0;
 		for (NeuralNetCore<E> each : nets)
 			each.save(fileName + i++);
-		PrintStream p = new PrintStream(new FileOutputStream(fileName));
-		p.print(this.getParametersAsJSONString());
-		p.close();
-
 	}
 	
 	@Override

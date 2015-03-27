@@ -1,5 +1,8 @@
 package ch.eonum.pipeline.transformation;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,6 +89,21 @@ public class MinMaxNormalizerSequence<E extends Sequence> extends Transformer<E>
 					: 0.0;
 			value = (value - min.get(feature)) / delta.get(feature);
 			point.put(feature, value);
+		}
+	}
+	
+	/**
+	 * Write maxima and minima to a file.
+	 * @param fileName
+	 */
+	public void writeToFile(String fileName) {
+		try {
+			PrintStream p = new PrintStream(new FileOutputStream(fileName));
+			for(String feature : max.features())
+				p.println(feature + " " + min.get(feature) + " " + max.get(feature));
+			p.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

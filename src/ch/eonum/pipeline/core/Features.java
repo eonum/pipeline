@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -233,7 +232,6 @@ public class Features {
 	public void recalculateIndex() {
 		this.featuresByIndex = new ArrayList<String>(
 				this.indicesByFeature.keySet());
-		Collections.sort(featuresByIndex);
 		this.indicesByFeature = new HashMap<String, Integer>();
 		for (int i = 0; i < this.featuresByIndex.size(); i++)
 			this.indicesByFeature.put(this.featuresByIndex.get(i), i);

@@ -1,8 +1,6 @@
 package ch.eonum.pipeline.core;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -143,20 +141,7 @@ public class Parameters {
 	 * @throws IOException 
 	 */
 	public void printParameters(File file) throws IOException {
-		FileWriter fstream = new FileWriter(file);
-		BufferedWriter out = new BufferedWriter(fstream);
-		out.write(this.getParametersAsJSONString());
-		out.close();
-	}
-	
-	/**
-	 * Get all parameters as a JSON-encoded String.
-	 * 
-	 * @return
-	 */
-	protected String getParametersAsJSONString() {
-		Map<String, Object> bdbo = this.asMap();
-		return bdbo.toString();
+		JSON.writeJSON(file, this.asMap());
 	}
 
 	/**
