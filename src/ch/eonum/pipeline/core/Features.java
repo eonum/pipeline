@@ -331,7 +331,10 @@ public class Features {
 
 	/**
 	 * Remove all features that contain only constant values or are highly
-	 * correlated with another feature.
+	 * correlated with another feature. Use this to avoid the problem of
+	 * multicollinearity in linear regression problems (there is no inverse
+	 * matrix if two or more features are perfectly correlated or one or more
+	 * features is constant.)
 	 * 
 	 * @param features
 	 * @param dataSet
