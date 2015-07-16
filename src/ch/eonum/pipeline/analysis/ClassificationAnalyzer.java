@@ -13,9 +13,14 @@ import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.core.SparseInstance;
 
 /**
- *<p>Analyze the results of a classification task.</p>
+ * <p>
+ * Analyze the results of a classification task.
+ * </p>
  * 
- * <p>Recognition rate. Recognition rate per class, class distributions etc..</p>
+ * <p>
+ * Recognition rate. Recognition rate per class, class distributions, confusion
+ * matrix etc..
+ * </p>
  * 
  * @author tim
  * 
@@ -49,9 +54,18 @@ public class ClassificationAnalyzer<E extends Instance> {
 				* 100.0);
 
 		Set<String> classes = data.collectClasses();
-		for (String i : classes)
+		Map<String, Integer> indicesByClassName = new HashMap<String, Integer>();
+		Map<Integer, String> classNamesByIndex = new HashMap<Integer, String>();
+		int[][] confusionMatrix = new int[classes.size()][classes.size()];
+		
+		int j = 0;
+		for (String i : classes){
 			metricsPerClass.put(i, new SparseInstance(i, i,
 					new HashMap<String, Double>()));
+			indicesByClassName.put(i, j);
+			classNamesByIndex.put(j, i);
+			j++;
+		}
 
 		for (Instance i : data) {
 			Instance metrics = metricsPerClass.get(i.groundTruth);
@@ -61,6 +75,10 @@ public class ClassificationAnalyzer<E extends Instance> {
 				m.put("classProb",
 						m.get("classProb") + i.getResult("classProb" + c));
 			}
+			
+			int y = indicesByClassName.get(i.label);
+			int x = indicesByClassName.get(i.groundTruth);
+			confusionMatrix[x][y]++;
 
 			if (i.groundTruth != null && i.groundTruth.equals(i.label))
 				metrics.put("correct", metrics.get("correct") + 1.);
@@ -97,6 +115,19 @@ public class ClassificationAnalyzer<E extends Instance> {
 			ps.print(cl + ";");
 			for (String c : columns)
 				ps.print(metricsPerClass.get(cl).get(c) + ";");
+			ps.println();
+		}
+		
+		ps.println();ps.println();
+		ps.println("Confusion matrix (x-axis: ground truth, y-axis: prediction");
+		ps.print(";");
+		for(int i = 0; i < classes.size(); i++)
+			ps.print(classNamesByIndex.get(i) + ";");
+		ps.println();
+		for(int y = 0; y < classes.size(); y++){
+			ps.print(classNamesByIndex.get(y) + ";");
+			for(int x = 0; x < classes.size(); x++)
+				ps.print(confusionMatrix[x][y] + ";");
 			ps.println();
 		}
 
