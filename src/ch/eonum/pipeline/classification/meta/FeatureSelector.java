@@ -81,7 +81,7 @@ public class FeatureSelector<E extends Instance> extends Classifier<E> {
 			baseClassifier.train();
 			double eval = this.evaluator.evaluate(this.baseClassifier.test());
 			log("Iteration " + iteration + ": " + eval + " Size of reduced feature set: " + reducedFeatures.size());
-			if(eval < max)
+			if(eval <= max)
 				afterMax++;
 			else {
 				max = eval;
@@ -101,6 +101,7 @@ public class FeatureSelector<E extends Instance> extends Classifier<E> {
 	private void log(String message) {
 		Log.puts(message);
 		this.log.println(message);
+		this.log.flush();
 	}
 
 	private ArrayList<FeatureDelta> createRemoveFeaturesRanking(
