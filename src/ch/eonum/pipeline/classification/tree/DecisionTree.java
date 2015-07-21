@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import ch.eonum.pipeline.classification.Classifier;
 import ch.eonum.pipeline.core.DataSet;
@@ -60,6 +61,14 @@ public class DecisionTree<E extends Instance> extends Classifier<E> implements R
 		if(this.splitsPerFeature == null)
 			splitsPerFeature = calculateSplitsPerFeature(features,
 					trainingDataSet, this.getDoubleParameter("tolerance"));
+		
+		if(this.classes == null){
+			this.classes = new Features();
+			Set<String> classes = trainingDataSet.collectClasses();
+			for(String className : classes)
+				this.classes.addFeature(className);
+			this.classes.recalculateIndex();
+		}
 		this.root = createSplitNode();
 		root.train();
 		
