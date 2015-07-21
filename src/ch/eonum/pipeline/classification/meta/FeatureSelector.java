@@ -1,5 +1,7 @@
 package ch.eonum.pipeline.classification.meta;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class FeatureSelector<E extends Instance> extends Classifier<E> {
 	private Classifier<E> baseClassifier;
 	private Features reducedFeatures;
 	private Evaluator<E> evaluator;
+	private PrintWriter log;
 
 	public FeatureSelector(Classifier<E> baseClassifier, Features features, Evaluator<E> evaluator) {
 		this.evaluator = evaluator;
@@ -46,6 +49,11 @@ public class FeatureSelector<E extends Instance> extends Classifier<E> {
 
 	@Override
 	public void train() {
+		try {
+			log = new PrintWriter(this.baseDir + "featureReduction.log");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		this.baseClassifier.setTrainingSet(trainingDataSet);
 		this.baseClassifier.setTestSet(testDataSet);
 		int l = (int)this.getDoubleParameter("l");
@@ -60,19 +68,19 @@ public class FeatureSelector<E extends Instance> extends Classifier<E> {
 			iteration++;
 			ArrayList<FeatureDelta> ranking = this.createAddFeaturesRanking(features, reducedFeatures);
 			for(int i = 0; i < l; i++){
-				Log.puts("Adding feature: " + ranking.get(i).getFeature());
+				log("Adding feature: " + ranking.get(i).getFeature());
 				reducedFeatures.addFeature(ranking.get(i).getFeature());
 			}
 			reducedFeatures.recalculateIndex();
 			ranking = this.createRemoveFeaturesRanking(reducedFeatures);
 			for(int i = 0; i < r; i++){
-				Log.puts("Remove feature: " + ranking.get(i).getFeature());
+				log("Remove feature: " + ranking.get(i).getFeature());
 				reducedFeatures.removeFeature(ranking.get(i).getFeature());
 			}
 			reducedFeatures.recalculateIndex();
 			baseClassifier.train();
 			double eval = this.evaluator.evaluate(this.baseClassifier.test());
-			Log.puts("Iteration " + iteration + ": " + eval + " Size of reduced feature set: " + reducedFeatures.size());
+			log("Iteration " + iteration + ": " + eval + " Size of reduced feature set: " + reducedFeatures.size());
 			if(eval < max)
 				afterMax++;
 			else {
@@ -87,8 +95,14 @@ public class FeatureSelector<E extends Instance> extends Classifier<E> {
 		this.reducedFeatures.writeToFile(baseDir + "reduced-features.txt");
 		baseClassifier.setFeatures(reducedFeatures);
 		baseClassifier.train();
+		log.close();
 	} 
 	
+	private void log(String message) {
+		Log.puts(message);
+		this.log.println(message);
+	}
+
 	private ArrayList<FeatureDelta> createRemoveFeaturesRanking(
 			Features reduced) {
 		ArrayList<FeatureDelta> featureDeltas = new ArrayList<FeatureDelta>();
