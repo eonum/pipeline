@@ -56,7 +56,7 @@ public class ClassificationAnalyzer<E extends Instance> {
 		Set<String> classes = data.collectClasses();
 		Map<String, Integer> indicesByClassName = new HashMap<String, Integer>();
 		Map<Integer, String> classNamesByIndex = new HashMap<Integer, String>();
-		int[][] confusionMatrix = new int[classes.size()][classes.size()];
+		int[][] confusionMatrix = new int[classes.size() + 1][classes.size() + 1];
 		
 		int j = 0;
 		for (String i : classes){
@@ -76,8 +76,10 @@ public class ClassificationAnalyzer<E extends Instance> {
 						m.get("classProb") + i.getResult("classProb" + c));
 			}
 			
-			int y = indicesByClassName.get(i.label);
-			int x = indicesByClassName.get(i.groundTruth);
+			int y = indicesByClassName.get(i.label) == null ? confusionMatrix.length - 1 : 
+				indicesByClassName.get(i.label);
+			int x = indicesByClassName.get(i.groundTruth) == null ? confusionMatrix.length - 1
+					: indicesByClassName.get(i.groundTruth);
 			confusionMatrix[x][y]++;
 
 			if (i.groundTruth != null && i.groundTruth.equals(i.label))
@@ -103,6 +105,8 @@ public class ClassificationAnalyzer<E extends Instance> {
 
 		/** write results. */
 		PrintStream ps = new PrintStream(new File(fileName));
+		/** BOM marker for Excel! */
+		ps.write('\uFEFF');
 		ps.println();
 		ps.println("Total;" + data.size() + ";Recognition Rate;"
 				+ totalMetrics.get("RecognitionRate"));
