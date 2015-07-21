@@ -28,6 +28,7 @@ public class FeatureDelta implements Comparable<FeatureDelta> {
 
 	@Override
 	public int compareTo(FeatureDelta other) {
+		if(delta == other.getDelta()) return 0;
 		return delta - other.getDelta() > 0 ? -1 : 1;
 	}
 	
