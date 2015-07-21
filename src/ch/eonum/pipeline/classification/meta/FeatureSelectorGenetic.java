@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import ch.eonum.pipeline.classification.Classifier;
 import ch.eonum.pipeline.core.DataSet;
@@ -40,6 +41,7 @@ protected static final Map<String, String> PARAMETERS = new HashMap<String, Stri
 	private boolean[][] genes;
 	private Features currentBestFeatures;
 	private PrintStream printer;
+	private Random random;
 
 	public FeatureSelectorGenetic(Classifier<E> baseClassifier, Features features, Evaluator<E> evaluator) {
 		this.evaluator = evaluator;
@@ -53,6 +55,7 @@ protected static final Map<String, String> PARAMETERS = new HashMap<String, Stri
 		this.putParameter("initialPopulationSize", 100.0);
 		this.putParameter("crossover", 0.6);
 		this.putParameter("mutation", 0.001);
+		this.random = new Random(23);
 	}
 
 	@Override
@@ -140,9 +143,10 @@ protected static final Map<String, String> PARAMETERS = new HashMap<String, Stri
 
 	private void generateInitialPopulation() {
 		this.genes = new boolean[(int)this.getDoubleParameter("initialPopulationSize")][this.featureSize];
+		double threshold = this.random.nextDouble() * 0.9 + 0.1;
 		for(int g = 0; g < genes.length; g++)
 			for(int f = 0; f < this.featureSize; f++)
-				genes[g][f] = Math.random() > 0.5;
+				genes[g][f] = this.random.nextDouble() > threshold;
 	}
 
 	private void generateNewPopulation() {
@@ -158,24 +162,24 @@ protected static final Map<String, String> PARAMETERS = new HashMap<String, Stri
 		}
 		while(added < genes.length){
 			boolean[] gene1 = new boolean[featureSize];
-			boolean[] parent = parents[(int)(Math.random()*parents.length)];
+			boolean[] parent = parents[(int)(this.random.nextDouble() * parents.length)];
 			for(int f = 0; f < featureSize; f++)
 				gene1[f] = parent[f];
 			boolean[] gene2 = new boolean[featureSize];
-			parent = parents[(int)(Math.random()*parents.length)];
+			parent = parents[(int)(this.random.nextDouble() * parents.length)];
 			for(int f = 0; f < featureSize; f++)
 				gene2[f] = parent[f];
 			
-			if(Math.random() < crossover){
+			if(this.random.nextDouble() < crossover){
 				for(int f = 0; f < featureSize; f++)
-					if(Math.random() < 0.5){
+					if(this.random.nextDouble() < 0.5){
 						boolean temp = gene1[f];
 						gene1[f] = gene2[f];
 						gene2[f] = temp;
 					}
 			}
-			if(Math.random() < mutation){
-				int f = (int)(Math.random()*gene1.length);
+			if(this.random.nextDouble() < mutation){
+				int f = (int)(this.random.nextDouble() * gene1.length);
 				gene1[f] = !gene1[f];
 				gene2[f] = !gene2[f];
 			}
@@ -188,8 +192,8 @@ protected static final Map<String, String> PARAMETERS = new HashMap<String, Stri
 		}
 		/** shuffle. */
 		for(int i = 0; i < genes.length; i++){
-			int x = (int)(Math.random()*genes.length);
-			int y = (int)(Math.random()*genes.length);
+			int x = (int)(this.random.nextDouble() * genes.length);
+			int y = (int)(this.random.nextDouble() * genes.length);
 			boolean[] temp = genes[x];
 			genes[x] = genes[y];
 			genes[y] = temp;
