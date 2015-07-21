@@ -1,6 +1,8 @@
 package ch.eonum.pipeline.classification.tree;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import ch.eonum.pipeline.core.DataSet;
@@ -160,5 +162,20 @@ public class SplitNode<E extends Instance> {
 		for(String line : lines)
 			ret += "  " + line + "\n";
 		return ret;
+	}
+
+	public Map<String, Object> asMap() {
+		Map<String, Object> node = new HashMap<String, Object>();
+		node.put("value", value);
+		node.put("num", trainSet.size());
+		if(splitFeature != null){
+			node.put("splitOn", splitFeature);
+			node.put("splitValue", splitValue);
+		}
+		if(right != null)
+			node.put("right", right.asMap());
+		if(left != null)
+			node.put("left", left.asMap());
+		return node;
 	}
 }

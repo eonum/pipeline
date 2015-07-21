@@ -75,6 +75,25 @@ public class DecisionTree<E extends Instance> extends Classifier<E> implements R
 		Log.puts(((treeNumber != -1) ? "== Tree " + treeNumber + " ==\n": "") + root);
 	}
 	
+	@Override
+	public Map<String, Object> asMap(){
+		Map<String, Object> dbo = super.asMap();
+		dbo.put("classify", classify);
+		List<String> list;
+		if(classes != null){
+			list = classes.asStringList();
+			dbo.put("classes", list);
+		}
+		if(features != null){
+			list = features.asStringList();
+			dbo.put("features", list);
+		}
+		dbo.put("classify", classify);
+		dbo.put("baseDir", baseDir);
+		dbo.put("tree", root.asMap());
+		return dbo;
+	}
+	
 	protected SplitNode<E> createSplitNode() {
 		return new SplitNode<E>(this, 1, this.trainingDataSet);
 	}
