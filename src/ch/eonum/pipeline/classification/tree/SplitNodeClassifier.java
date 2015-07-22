@@ -2,8 +2,10 @@ package ch.eonum.pipeline.classification.tree;
 
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Features;
@@ -135,4 +137,26 @@ public class SplitNodeClassifier<E extends Instance> extends SplitNode<E> {
 		tree += "}";
 		return tree;
 	}
+
+	public String getLabel() {
+		return this.label;
+	}
+	
+	@Override
+	public void prune(Set<Object> distinctLabels) {
+		distinctLabels.add(this.label);
+		
+		Set<Object> below = new HashSet<Object>();
+		if(this.left != null)
+			this.left.prune(below);
+		if(this.right != null)
+			this.right.prune(below);
+		
+		if(below.size() == 1){
+			this.right = null;
+			this.left = null;
+		}
+		
+		distinctLabels.addAll(below);
+}
 }

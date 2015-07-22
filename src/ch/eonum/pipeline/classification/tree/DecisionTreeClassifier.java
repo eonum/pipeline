@@ -1,6 +1,7 @@
 package ch.eonum.pipeline.classification.tree;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -38,4 +39,10 @@ public class DecisionTreeClassifier<E extends Instance> extends DecisionTree<E> 
 		return new SplitNodeClassifier<E>(this, 1, this.trainingDataSet, classes);
 	}
 
+	/**
+	 * lossless pruning.
+	 */
+	public void prune() {
+		this.getRoot().prune(new HashSet<Object>());
+	}
 }

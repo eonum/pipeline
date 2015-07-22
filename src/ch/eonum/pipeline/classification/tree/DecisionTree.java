@@ -131,5 +131,9 @@ public class DecisionTree<E extends Instance> extends Classifier<E> implements R
 	public List<Double> getSplitsForFeature(String feature) {
 		return this.splitsPerFeature.get(feature);
 	}
+	
+	public SplitNode<E> getRoot() {
+		return this.root;
+	}
 
 }
