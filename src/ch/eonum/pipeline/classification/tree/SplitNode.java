@@ -147,7 +147,7 @@ public class SplitNode<E extends Instance> {
 	}
 	
 	public String toString(){
-		String tree = "{ 'value' : " + value + ", 'num' : " + trainSet.size();
+		String tree = "{ 'value' : " + value + ", 'num' : " + (trainSet == null ? "NaN" : trainSet.size());
 		if(splitFeature != null)
 			tree += ", 'splitOn' : '" + splitFeature + "', 'splitValue' : " + splitValue;
 		if(right != null)
@@ -180,6 +180,21 @@ public class SplitNode<E extends Instance> {
 			node.put("left", left.asMap());
 		return node;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void loadFromJSON(DecisionTree<E> parent, Map<String, Object> json){
+		this.parent = parent;
+		this.value = (double) json.get("value");
+		
+		if(json.containsKey("splitValue"))
+			this.splitValue = (double) json.get("splitValue");
+		if(json.containsKey("splitOn"))
+			this.splitFeature = json.get("splitOn").toString();
+		if(json.containsKey("left"))
+			this.left = parent.readNodeFromJSON((Map<String, Object>) json.get("left"));
+		if(json.containsKey("right"))
+			this.right = parent.readNodeFromJSON((Map<String, Object>) json.get("right"));
+	}
 
 	public SplitNode<E> getRight() {
 		return this.right;
@@ -194,7 +209,7 @@ public class SplitNode<E extends Instance> {
 	}
 
 	public void prune(Set<Object> distinctLabels) {
-			distinctLabels.add(this.splitValue);
+			distinctLabels.add(this.value);
 			
 			Set<Object> below = new HashSet<Object>();
 			if(this.left != null)
