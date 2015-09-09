@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import ch.eonum.pipeline.analysis.ClassProbability;
-
 import Jama.Matrix;
 
 /**
@@ -430,5 +429,44 @@ public class DataSet<E extends Instance> extends Vector<E> implements List<E> {
 				}
 			e.putResult("rank", rank);
 		}	
+	}
+
+	/**
+	 * Equalize the class distribution. All classes will have the same number of
+	 * samples in this data set after the application of this function. This is
+	 * done by duplicating randomly selected samples from each class until the
+	 * number of samples in the respective class is equals the number of samples
+	 * in the largest class.
+	 */
+	@SuppressWarnings("unchecked")
+	public void equalizeClassDistribution(int seed) {
+		/** get number of samples by class. */
+		Map<String, Integer> classSizes = new HashMap<String, Integer>();
+		Map<String, List<E>> samplesByClass = new HashMap<String, List<E>>();
+		for(E each : this){
+			String gt = each.groundTruth;
+			if(classSizes.containsKey(gt))
+				classSizes.put(gt, classSizes.get(gt) + 1);
+			else {
+				classSizes.put(gt, 1);
+				samplesByClass.put(gt, new ArrayList<E>());
+			}
+			samplesByClass.get(gt).add(each);
+		}
+		/** get max number of samples by class. */
+		int max = Integer.MIN_VALUE;
+		for(Integer i : classSizes.values())
+			max = Math.max(max, i);
+		
+		/** add samples to classes until the have max number of samples. */
+		Random rand = new Random(seed);
+		for(String className : classSizes.keySet()){
+			int n = classSizes.get(className);
+			List<E> samples = samplesByClass.get(className);
+			for(int i = n; i < max; i++){
+				E sample = samples.get(rand.nextInt(n));
+				this.add((E) sample.copy());
+			}
+		}
 	}
 }

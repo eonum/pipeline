@@ -1,5 +1,7 @@
 package ch.eonum.pipeline.classification.tree;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import ch.eonum.pipeline.core.DataSet;
 import ch.eonum.pipeline.core.Features;
 import ch.eonum.pipeline.core.Instance;
 import ch.eonum.pipeline.util.Log;
+import ch.eonum.pipeline.util.json.JSON;
 
 /**
  * CART decision tree for regression. @link http://en.wikipedia.org/wiki/Decision_tree_learning
@@ -134,6 +137,26 @@ public class DecisionTree<E extends Instance> extends Classifier<E> implements R
 	
 	public SplitNode<E> getRoot() {
 		return this.root;
+	}
+	
+	@Override
+	public void loadSerializedState(File file) throws IOException {
+		super.loadSerializedState(file);
+		this.load(file.getAbsolutePath());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void load(String fileName) throws IOException{
+		super.load(fileName);
+		Map<String, Object> tree = JSON.readJSON(fileName);
+		this.root = this.readNodeFromJSON((Map<String, Object>) tree.get("tree"));
+	}
+
+	SplitNode<E> readNodeFromJSON(Map<String, Object> json) {
+		SplitNode<E> node = this.createSplitNode();
+		node.loadFromJSON(this, json);		
+		return node;
 	}
 
 }
