@@ -106,7 +106,7 @@ public class PredictCode {
 				20.0, 1.0, 1.0, false));
 		
 
-		Map<ParameterValidation, Double> params = lstmSystem.gradientAscent(paramsGradientAscent, 5, resultsFolder + "parameter_validation/");
+		Map<ParameterValidation, Double> params = lstmSystem.parameterSearch(paramsGradientAscent, 5, resultsFolder + "parameter_validation/");
 		Log.puts("Optimal Parameters: " + params);
 		ParameterValidation.updateParameters(params);		
 		

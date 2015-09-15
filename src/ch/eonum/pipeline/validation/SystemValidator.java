@@ -160,13 +160,13 @@ public class SystemValidator<E extends Instance> {
 	}
 
 	/**
-	 * find out the optimum for all parameters in params by gradient ascent.
+	 * Find out the local optimum for all meta parameters. 
 	 * @param params
 	 * @param nIterations
 	 * @param dir directory for results
 	 * @return
 	 */
-	public Map<ParameterValidation, Double> gradientAscent(
+	public Map<ParameterValidation, Double> parameterSearch(
 			List<ParameterValidation> params, int nIterations, String dir) {
 		
 		Map<ParameterValidation, Double> values = new HashMap<ParameterValidation, Double>();
@@ -177,7 +177,7 @@ public class SystemValidator<E extends Instance> {
 		
 		try {
 			PrintStream p = new PrintStream(new FileOutputStream(dir
-					+ "gradientAscent.txt"));
+					+ "parameterSearch.txt"));
 
 			for(int i = 1; i <= nIterations; i++){
 				boolean changed = false;
