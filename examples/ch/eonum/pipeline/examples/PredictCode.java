@@ -34,6 +34,7 @@ public class PredictCode {
 	public static final String dataset = "src/ch/eonum/pipeline/core/DenseSequence.java";
 	/** folder where results (the model, validation results, gnuplots) will be written to. */
 	public static final String resultsFolder = "examples/results/javacode/";
+	private static final String baseResultsFolder = "examples/results/";
 	/** allowed tokens/characters. */
 	public static final char[] allowedChars = new char[] { 'a', 'b', 'c', 'd',
 			'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
@@ -49,6 +50,7 @@ public class PredictCode {
 	 * @throws ParseException
 	 */
 	public static void main(String[] args) throws IOException, ParseException {
+		FileUtil.mkdir(baseResultsFolder);
 		FileUtil.mkdir(resultsFolder);
 		
 		Features allowedCharMap = new Features();
